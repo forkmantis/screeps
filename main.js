@@ -11,8 +11,10 @@ module.exports.loop = function () {
         }
     }
 
-    autoSpawn('harvester', [WORK,CARRY,MOVE], 2);
-    autoSpawn('upgrader', [WORK,CARRY,MOVE], 2);
+    autoSpawn('harvester', [WORK,WORK,CARRY,CARRY,MOVE,MOVE], 3);
+    autoSpawn('upgrader', [WORK,WORK,CARRY,CARRY,MOVE,MOVE], 4);
+    autoSpawn('builder', [WORK,WORK,CARRY,CARRY,MOVE,MOVE,MOVE], 3);
+    
 
     for(var name in Game.creeps) {
         var creep = Game.creeps[name];
@@ -30,7 +32,7 @@ module.exports.loop = function () {
 
 function autoSpawn(role, attributes, quantity) {
     var spawns = _.filter(Game.creeps, (creep) => creep.memory.role == role);
-    console.log(role + ' ' + spawns.length);
+    //console.log(role + ' ' + spawns.length);
     
     if (spawns.length < quantity) {
         var newName = Game.spawns['SpawnMantis'].createCreep(attributes, undefined, {'role': role});
