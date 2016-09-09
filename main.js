@@ -37,10 +37,11 @@ module.exports.loop = function () {
 
 function autoSpawn(role, attributes, quantity) {
     var spawns = _.filter(Game.creeps, (creep) => creep.memory.role == role);
-    //console.log(role + ' ' + spawns.length);
-    
+
     if (spawns.length < quantity) {
         var newName = Game.spawns['SpawnMantis'].createCreep(attributes, undefined, {'role': role});
-        console.log('Spawning new ' + role + ' ' + newName);
+        if (newName > 0) {
+            console.log('Spawning new ' + role + ' ' + newName);
+        }
     }
 }

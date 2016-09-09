@@ -19,10 +19,8 @@ var roleRepairer = {
 	        var target = util.findNearestRepairTarget(creep);
             if(target) {
                 creep.memory.target = target.id;
-                console.log(creep.name + ' repairing ' + creep.memory.target);
                 error = creep.repair(Game.getObjectById(creep.memory.target));
                 if(error == ERR_NOT_IN_RANGE) {
-                    console.log('repairer ' + creep.name + ' moving to ' + creep.memory.target);
                     creep.moveTo(Game.getObjectById(creep.memory.target));
                 }
             }
