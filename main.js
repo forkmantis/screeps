@@ -12,7 +12,7 @@ module.exports.loop = function () {
         }
     }
 
-    autoSpawn('harvester', [WORK,WORK,WORK,CARRY,CARRY,MOVE,MOVE], 2);
+    autoSpawn('harvester', [WORK,WORK,WORK,CARRY,CARRY,MOVE,MOVE], 3);
     autoSpawn('upgrader', [WORK,WORK,WORK,CARRY,CARRY,MOVE], 4);
     autoSpawn('builder', [WORK,WORK,CARRY,CARRY,MOVE,MOVE], 2);
     autoSpawn('repairer', [WORK,WORK,CARRY,CARRY,MOVE,MOVE], 3);
