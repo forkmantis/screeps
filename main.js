@@ -19,6 +19,7 @@ module.exports.loop = function () {
     }
     autoSpawn('repairer', [WORK,WORK,CARRY,CARRY,MOVE,MOVE], 3);
     
+    towerRun();
 
     for(var name in Game.creeps) {
         var creep = Game.creeps[name];
@@ -42,8 +43,24 @@ function autoSpawn(role, attributes, quantity) {
 
     if (spawns.length < quantity) {
         var newName = Game.spawns['SpawnMantis'].createCreep(attributes, undefined, {'role': role});
-        if (newName > 0) {
-            console.log('Spawning new ' + role + ' ' + newName);
+        console.log('Spawning new ' + role + ' ' + newName);
+    }
+}
+
+function towerRun() {
+    var tower = Game.getObjectById('57d162391730b79e7c7dd2a0');
+    if(tower) {
+        var closestHostile = tower.pos.findClosestByRange(FIND_HOSTILE_CREEPS);
+        if(closestHostile) {
+            tower.attack(closestHostile);
         }
+
+        var closestDamagedStructure = tower.pos.findClosestByRange(FIND_STRUCTURES, {
+            filter: (structure) => structure.hits < structure.hitsMax && structure.hits < 100000
+        });
+        if(closestDamagedStructure) {
+            tower.repair(closestDamagedStructure);
+        }
+
     }
 }
