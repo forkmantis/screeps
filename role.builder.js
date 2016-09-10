@@ -8,6 +8,7 @@ var roleBuilder = {
             creep.say('harvesting');
 	    }
 	    if(!creep.memory.building && creep.carry.energy == creep.carryCapacity) {
+	        creep.moveTo(Game.flags.build1flag);
 	        creep.memory.building = true;
 	        creep.say('building');
 	    }
