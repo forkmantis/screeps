@@ -12,11 +12,9 @@ module.exports.loop = function () {
         }
     }
 
-    autoSpawn('harvester', [WORK,WORK,CARRY,CARRY,MOVE,MOVE], 3);
-    autoSpawn('upgrader', [WORK,WORK,CARRY,CARRY,MOVE,MOVE], 4);
-    if (Game.constructionSites.length > 0) {
-        autoSpawn('builder', [WORK,WORK,CARRY,CARRY,MOVE,MOVE,MOVE], 3);
-    }
+    autoSpawn('harvester', [WORK,WORK,WORK,CARRY,CARRY,MOVE,MOVE], 2);
+    autoSpawn('upgrader', [WORK,WORK,WORK,CARRY,CARRY,MOVE], 4);
+    autoSpawn('builder', [WORK,WORK,CARRY,CARRY,MOVE,MOVE], 2);
     autoSpawn('repairer', [WORK,WORK,CARRY,CARRY,MOVE,MOVE], 3);
     
     towerRun();
