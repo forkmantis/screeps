@@ -10,7 +10,10 @@ var roleHarvester = {
             creep.say('harvesting');
         }
         if(!creep.memory.delivering  && creep.carry.energy == creep.carryCapacity) {
-            creep.moveTo(Game.flags.build1flag);
+	        var flag = creep.pos.findClosestByRange(FIND_FLAGS);
+	        if (flag) {
+	            creep.moveTo(flag.id);    
+	        }
             creep.memory.delivering = true;
             creep.say('delivering');
         }
