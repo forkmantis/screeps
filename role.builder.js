@@ -42,8 +42,7 @@ var roleBuilder = {
                 }
                 if(creep.harvest(Game.getObjectById(creep.memory.target)) == ERR_NOT_IN_RANGE) {
                     creep.moveTo(Game.getObjectById(creep.memory.target));
-            }
-
+                }
             }
 	    }
 	}
