@@ -53,14 +53,15 @@ function towerRun() {
             tower.attack(closestHostile);
         }
 
-        var closestDamagedStructure = tower.pos.findClosestByRange(FIND_STRUCTURES, {
-            filter: (structure) => structure.hits < structure.hitsMax
-            && structure.hits < 20000
-            && structure.structureType != STRUCTURE_ROAD
-        });
-        if(closestDamagedStructure) {
-            tower.repair(closestDamagedStructure);
+        if (tower.energy > (tower.energyCapacity * .5)) {
+            var closestDamagedStructure = tower.pos.findClosestByRange(FIND_STRUCTURES, {
+                filter: (structure) => structure.hits < structure.hitsMax
+                && structure.hits < 20000
+                && structure.structureType != STRUCTURE_ROAD
+            });
+            if(closestDamagedStructure) {
+                tower.repair(closestDamagedStructure);
+            }
         }
-
     }
 }
