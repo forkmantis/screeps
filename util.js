@@ -44,7 +44,7 @@ module.exports = {
     findNearestEmptyTower(creep) {
         return creep.pos.findClosestByRange(FIND_STRUCTURES, {
             filter: function(object) {
-                return object.structureType == STRUCTURE_TOWER && object.store < object.storeCapacity;
+                return object.structureType == STRUCTURE_TOWER && object.energy < object.energyCapacity;
             }
         })
     },
