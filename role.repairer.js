@@ -11,10 +11,7 @@ var roleRepairer = {
             creep.say('harvesting');
 	    }
 	    if(!creep.memory.repairing && creep.carry.energy == creep.carryCapacity) {
-	        var flag = creep.pos.findClosestByRange(FIND_FLAGS);
-	        if (flag) {
-	            creep.moveTo(flag.id);    
-	        }
+	        creep.moveTo(Game.flags.build1flag);
 	        creep.memory.repairing = true;
 	        creep.say('repairing');
 	    }
