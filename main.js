@@ -12,10 +12,12 @@ module.exports.loop = function () {
         }
     }
 
-    autoSpawn('harvester', [WORK,WORK,WORK,CARRY,CARRY,MOVE,MOVE], 3);
-    autoSpawn('upgrader', [WORK,WORK,WORK,CARRY,CARRY,MOVE], 4);
-    autoSpawn('builder', [WORK,WORK,CARRY,CARRY,MOVE,MOVE], 2);
-    autoSpawn('repairer', [WORK,WORK,CARRY,CARRY,MOVE,MOVE], 3);
+    autoSpawn('harvester', [WORK,WORK,WORK,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE], 4);
+    autoSpawn('upgrader', [WORK,WORK,WORK,CARRY,CARRY,MOVE], 5);
+    if(Game.rooms['W28N27'].find(FIND_CONSTRUCTION_SITES).length > 0) {
+        autoSpawn('builder', [WORK,WORK,WORK,CARRY,CARRY,MOVE], 2);
+    }
+    autoSpawn('repairer', [WORK,WORK,CARRY,MOVE,MOVE,MOVE], 2);
     
     towerRun();
 
@@ -34,6 +36,8 @@ module.exports.loop = function () {
             roleRepairer.run(creep);
         }
     }
+    
+    //var construcionSites = Game.rooms[0].find(FIND_CONSTRUCTION_SITES);
 }
 
 function autoSpawn(role, attributes, quantity) {
