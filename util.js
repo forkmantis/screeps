@@ -57,11 +57,15 @@ module.exports = {
         });
     },
     findNearestRepairTarget(creep) {
-        return creep.pos.findClosestByRange(FIND_STRUCTURES, {
-            filter: function(object) {
-                //Filter out buildings with full health
-                return object.hits < object.hitsMax && object.hits < 100000; //Don't repair over 100K
-            }
-        });
+        var target = null;
+        for (var i = 500; i <= 3000000; i += 20000) {
+            target = creep.pos.findClosestByRange(FIND_STRUCTURES, {
+                filter: function(object) {
+                    //Filter out buildings with full health
+                    return object.hits < object.hitsMax && object.hits < 100000; //Don't repair over 100K
+                }
+            });
+            if (target) return target;
+        }
     }
 }
