@@ -62,7 +62,7 @@ module.exports = {
             target = creep.pos.findClosestByRange(FIND_STRUCTURES, {
                 filter: function(object) {
                     //Filter out buildings with full health
-                    return object.hits < object.hitsMax && object.hits < 100000; //Don't repair over 100K
+                    return object.hits < (object.hitsMax * .95) && object.hits < i; //Don't repair over 100K
                 }
             });
             if (target) return target;
