@@ -53,12 +53,19 @@ var roleHarvester = {
             }
         }
         else {
+            var dropped = creep.pos.findClosestByRange(FIND_DROPPED_ENERGY);
             var source = creep.pos.findClosestByRange(FIND_SOURCES);
+            if (dropped) {
+                creep.memory.target = dropped.id;
+                if(creep.pickup(Game.getObjectById(creep.memory.target)) == ERR_NOT_IN_RANGE) {
+                    creep.moveTo(Game.getObjectById(creep.memory.target));
+                }
+            }
             if (source) {
                 creep.memory.target = source.id;
-            }
-            if(creep.harvest(Game.getObjectById(creep.memory.target)) == ERR_NOT_IN_RANGE) {
-                creep.moveTo(Game.getObjectById(creep.memory.target));
+                if(creep.harvest(Game.getObjectById(creep.memory.target)) == ERR_NOT_IN_RANGE) {
+                    creep.moveTo(Game.getObjectById(creep.memory.target));
+                }
             }
         }
 	}
