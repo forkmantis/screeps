@@ -19,14 +19,14 @@ var roleHarvester = {
         }
 
         if(creep.memory.delivering) {
-            var targetTurret = util.findNearestEmptyTower(creep);
             var targetExtension = util.findNearestEmptyExtension(creep);
+            var targetTurret = util.findNearestEmptyTower(creep);
             var targetStorage = util.findNearestEmptyStorage(creep);
-            if (targetTurret) {
-                creep.memory.target = targetTurret.id;
-            }
-            else if (targetExtension) {
+            if (targetExtension) {
                 creep.memory.target = targetExtension.id;
+            }
+            else if (targetTurret) {
+                creep.memory.target = targetTurret.id;
             }
             else if (targetStorage) {
                 creep.memory.target = targetStorage.id;
