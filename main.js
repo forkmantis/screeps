@@ -18,6 +18,7 @@ module.exports.loop = function () {
         autoSpawn('builder', [WORK,WORK,WORK,CARRY,CARRY,MOVE], 3);
     }
     autoSpawn('repairer', [WORK,WORK,CARRY,MOVE,MOVE,MOVE], 2);
+    autoSpawn('harvester', [WORK,CARRY,MOVE], 2); // IN CASE OF EMERGENCY
     
     towerRun();
 
