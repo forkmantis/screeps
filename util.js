@@ -41,6 +41,14 @@ module.exports = {
             }
         })  
     },
+    findNearestFullContainerOrStorage(creep) {
+        return creep.pos.findClosestByRange(FIND_STRUCTURES, {
+            filter: function(object) {
+                return (object.structureType == STRUCTURE_STORAGE || object.structureType == STRUCTURE_CONTAINER) &&
+                    object.store[RESOURCE_ENERGY] >= creep.carryCapacity;
+            }
+        });
+    },
     findNearestEmptyTower(creep) {
         return creep.pos.findClosestByRange(FIND_STRUCTURES, {
             filter: function(object) {

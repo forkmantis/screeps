@@ -28,7 +28,7 @@ var roleBuilder = {
 	    }
 	    else {
             
-            var storage = util.findNearestFullStorage(creep);
+            var storage = util.findNearestFullContainerOrStorage(creep);
             if (storage) {
                 creep.memory.target = storage.id;
                 if(creep.withdraw(Game.getObjectById(creep.memory.target), RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
