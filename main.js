@@ -2,6 +2,7 @@ var roleHarvester = require('role.harvester');
 var roleUpgrader = require('role.upgrader');
 var roleBuilder = require('role.builder');
 var roleRepairer = require('role.repairer');
+var _ = require('lodash');
 
 module.exports.loop = function () {
 
@@ -46,7 +47,9 @@ function autoSpawn(role, attributes, quantity) {
 
     if (spawns.length < quantity) {
         var newName = Game.spawns['SpawnMantis'].createCreep(attributes, undefined, {'role': role});
-        console.log('Spawning new ' + role + ' ' + newName);
+        if (_.isString(newName)) {
+            console.log('Spawning new ' + role + ' ' + newName);
+        }
     }
 }
 
