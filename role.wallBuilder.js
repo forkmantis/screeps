@@ -4,8 +4,6 @@ var roleWallBuilder = {
 
     run: function(creep) {
 
-        var error = 0;
-
 	    if(creep.memory.repairing && creep.carry.energy == 0) {
             creep.memory.repairing = false;
             creep.say('harvesting');
@@ -16,7 +14,7 @@ var roleWallBuilder = {
 	            creep.moveTo(flag.id);    
 	        }
 	        creep.memory.repairing = true;
-	        creep.say('repairing');
+	        creep.say('barriers!');
 	    }
 
 	    if(creep.memory.repairing) {

@@ -39,6 +39,9 @@ module.exports.loop = function () {
         if(creep.memory.role == 'repairer') {
             roleRepairer.run(creep);
         }
+        if(creep.memory.role == 'wallBuilder') {
+            roleWallBuilder.run(creep);
+        }
     }
     
     //var construcionSites = Game.rooms[0].find(FIND_CONSTRUCTION_SITES);
