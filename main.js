@@ -2,6 +2,7 @@ var roleHarvester = require('role.harvester');
 var roleUpgrader = require('role.upgrader');
 var roleBuilder = require('role.builder');
 var roleRepairer = require('role.repairer');
+var roleWallBuilder = require('role.wallBuilder');
 var _ = require('lodash');
 
 module.exports.loop = function () {
@@ -19,6 +20,7 @@ module.exports.loop = function () {
         autoSpawn('builder', [WORK,WORK,WORK,CARRY,CARRY,MOVE,MOVE], 3);
     }
     autoSpawn('repairer', [WORK,WORK,CARRY,MOVE,MOVE,MOVE], 2);
+    autoSpawn('wallBuilder', [WORK,WORK,CARRY,CARRY,MOVE,MOVE], 2);
     autoSpawn('harvester', [WORK,CARRY,MOVE], 2); // IN CASE OF EMERGENCY
     
     towerRun();

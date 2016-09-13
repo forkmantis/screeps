@@ -66,11 +66,19 @@ module.exports = {
     },
     findNearestRepairTarget(creep) {
         var target = null;
+        target = creep.pos.findClosestByRange(FIND_STRUCTURES, {
+            filter: function(object) {
+                return  object.hits < object.hitsMax && object.hits <= 100000;
+            }
+        })
+    },
+    findNearestRepairBarrier(creep) {
+        var target = null;
         for (var i = 500; i <= 3000000; i += 20000) {
             target = creep.pos.findClosestByRange(FIND_STRUCTURES, {
                 filter: function(object) {
-                    //Filter out buildings with full health
-                    return object.hits < object.hitsMax && object.hits < i;
+                    return (object.structureType == STRUCTURE_WALL || object.structureType == STRUCTURE_RAMPART) &&
+                        object.hits < object.hitsMax && object.hits < i;
                 }
             });
             if (target) return target;
