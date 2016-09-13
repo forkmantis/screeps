@@ -65,8 +65,7 @@ module.exports = {
         });
     },
     findNearestRepairTarget(creep) {
-        var target = null;
-        target = creep.pos.findClosestByRange(FIND_STRUCTURES, {
+        return creep.pos.findClosestByRange(FIND_STRUCTURES, {
             filter: function(object) {
                 return  object.hits < object.hitsMax && object.hits <= 100000;
             }
