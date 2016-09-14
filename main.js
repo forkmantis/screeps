@@ -13,15 +13,19 @@ module.exports.loop = function () {
             console.log('Clearing non-existing creep memory:', name);
         }
     }
-
-    autoSpawn('harvester', [WORK,WORK,WORK,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE], 4);
-    autoSpawn('upgrader', [WORK,WORK,WORK,CARRY,CARRY,MOVE], 5);
-    if(Game.rooms['W28N27'].find(FIND_CONSTRUCTION_SITES).length > 0) {
-        autoSpawn('builder', [WORK,WORK,WORK,CARRY,CARRY,MOVE,MOVE], 3);
+    var desiredHarvesters = 4;
+    var harvesters = _.filter(Game.creeps, (creep) => creep.memory.role = 'harvester');
+    if (harvesters.length < desiredHarvesters) {
+        autoSpawn('harvester', [WORK,WORK,WORK,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE], desiredHarvesters);
     }
-    autoSpawn('repairer', [WORK,WORK,CARRY,MOVE,MOVE,MOVE], 2);
-    autoSpawn('wallBuilder', [WORK,WORK,CARRY,CARRY,MOVE,MOVE], 2);
-    autoSpawn('harvester', [WORK,CARRY,MOVE], 2); // IN CASE OF EMERGENCY
+    else {
+        autoSpawn('upgrader', [WORK,WORK,WORK,CARRY,CARRY,MOVE], 5);
+        if(Game.rooms['W28N27'].find(FIND_CONSTRUCTION_SITES).length > 0) {
+            autoSpawn('builder', [WORK,WORK,WORK,CARRY,CARRY,MOVE,MOVE], 3);
+        }
+        autoSpawn('repairer', [WORK,WORK,CARRY,MOVE,MOVE,MOVE], 2);
+        autoSpawn('wallBuilder', [WORK,WORK,CARRY,CARRY,MOVE,MOVE], 2);
+    }
     
     towerRun();
 
