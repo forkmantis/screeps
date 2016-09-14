@@ -14,7 +14,7 @@ module.exports.loop = function () {
         }
     }
     var desiredHarvesters = 4;
-    var harvesters = _.filter(Game.creeps, (creep) => creep.memory.role = 'harvester');
+    var harvesters = _.filter(Game.creeps, (creep) => creep.memory.role == 'harvester');
     if (harvesters.length < desiredHarvesters) {
         autoSpawn('harvester', [WORK,WORK,WORK,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE], desiredHarvesters);
     }
