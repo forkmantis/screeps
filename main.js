@@ -9,7 +9,7 @@ module.exports.loop = function () {
 
     for(var name in Memory.creeps) {
         if(!Game.creeps[name]) {
-            console.log(Memory.creeps.memory.role, name, 'has died!');
+            console.log(Memory.creeps[name].role, name, 'has died!');
             delete Memory.creeps[name];
         }
     }
