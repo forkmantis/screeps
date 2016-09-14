@@ -13,7 +13,7 @@ module.exports.loop = function () {
             console.log('Clearing non-existing creep memory:', name);
         }
     }
-    var desiredHarvesters = 4;
+    var desiredHarvesters = 6;
     var harvesters = _.filter(Game.creeps, (creep) => creep.memory.role == 'harvester');
     if (harvesters.length < desiredHarvesters) {
         autoSpawn('harvester', [WORK,WORK,WORK,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE], desiredHarvesters);
