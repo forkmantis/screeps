@@ -17,7 +17,11 @@ module.exports.loop = function () {
     var desiredHarvesters = 6;
     var harvesters = _.filter(Game.creeps, (creep) => creep.memory.role == 'harvester');
     if (harvesters.length < desiredHarvesters) {
-        roleHarvester.spawn(Game.spawns['SpawnMantis']);
+        var newName = roleHarvester.spawn(Game.spawns['SpawnMantis']);
+        if (_.isString(newName)) {
+            console.log('Spawning new harvester ' + newName);
+        }
+        autoSpawn('harvester', [WORK,CARRY,MOVE], 2);
     }
     else {
         autoSpawn('upgrader', [WORK,WORK,WORK,CARRY,CARRY,MOVE], 5);

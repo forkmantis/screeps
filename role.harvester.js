@@ -70,10 +70,7 @@ var roleHarvester = {
         }
 	},
     spawn: function(spawn) {
-        var newName = spawn.createCreep([WORK,WORK,WORK,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE], undefined, {'role': 'harvester'});
-        if (_.isString(newName)) {
-            console.log('Spawning new harvester ' + newName);
-        }
+        return spawn.createCreep([WORK,WORK,WORK,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE], undefined, {'role': 'harvester'});
     }
 };
 
