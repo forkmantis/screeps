@@ -50,8 +50,8 @@ module.exports.loop = function () {
     
     for (var room in Game.rooms) {
         var towers = Game.rooms[room].find(FIND_MY_STRUCTURES, { filter: (tower) => tower.structureType == STRUCTURE_TOWER});
-	for(var name in towers) {
-	    tower = towers[name];
+        for(var name in towers) {
+            tower = towers[name];
 
             var closestHostile = tower.pos.findClosestByRange(FIND_HOSTILE_CREEPS);
             if(closestHostile) {
@@ -68,7 +68,7 @@ module.exports.loop = function () {
                     tower.repair(closestDamagedStructure);
                 }
             }
-	}
+        }
     }
 }
 
