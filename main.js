@@ -17,7 +17,7 @@ module.exports.loop = function () {
     var desiredHarvesters = 6;
     var harvesters = _.filter(Game.creeps, (creep) => creep.memory.role == 'harvester');
     if (harvesters.length < desiredHarvesters) {
-        autoSpawn('harvester', [WORK,WORK,WORK,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE], desiredHarvesters);
+        roleHarvester.spawn(Game.spawns['SpawnMantis']);
     }
     else {
         autoSpawn('upgrader', [WORK,WORK,WORK,CARRY,CARRY,MOVE], 5);
