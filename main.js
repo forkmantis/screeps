@@ -13,6 +13,7 @@ module.exports.loop = function () {
             delete Memory.creeps[name];
         }
     }
+
     var desiredHarvesters = 6;
     var harvesters = _.filter(Game.creeps, (creep) => creep.memory.role == 'harvester');
     if (harvesters.length < desiredHarvesters) {
@@ -28,8 +29,6 @@ module.exports.loop = function () {
         autoSpawn('wallBuilder', [WORK,WORK,CARRY,CARRY,MOVE,MOVE], 2);
     }
     
-    towerRun();
-
     for(var name in Game.creeps) {
         var creep = Game.creeps[name];
         if(creep.memory.role == 'harvester') {
@@ -49,7 +48,28 @@ module.exports.loop = function () {
         }
     }
     
-    //var construcionSites = Game.rooms[0].find(FIND_CONSTRUCTION_SITES);
+    for (var room in Game.rooms) {
+        var towers = Game.rooms[room].find(FIND_MY_STRUCTURES, { filter: (tower) => tower.structureType == STRUCTURE_TOWER});
+	for(var name in towers) {
+	    tower = towers[name];
+
+            var closestHostile = tower.pos.findClosestByRange(FIND_HOSTILE_CREEPS);
+            if(closestHostile) {
+                tower.attack(closestHostile);
+            }
+    
+            if (tower.energy > (tower.energyCapacity * .5)) {
+                var closestDamagedStructure = tower.pos.findClosestByRange(FIND_STRUCTURES, {
+                    filter: (structure) => structure.hits < structure.hitsMax
+                    && structure.hits < 20000
+                    && structure.structureType != STRUCTURE_ROAD
+                });
+                if(closestDamagedStructure) {
+                    tower.repair(closestDamagedStructure);
+                }
+            }
+	}
+    }
 }
 
 function autoSpawn(role, attributes, quantity) {
@@ -63,23 +83,3 @@ function autoSpawn(role, attributes, quantity) {
     }
 }
 
-function towerRun() {
-    var tower = Game.getObjectById('57d162391730b79e7c7dd2a0');
-    if(tower) {
-        var closestHostile = tower.pos.findClosestByRange(FIND_HOSTILE_CREEPS);
-        if(closestHostile) {
-            tower.attack(closestHostile);
-        }
-
-        if (tower.energy > (tower.energyCapacity * .5)) {
-            var closestDamagedStructure = tower.pos.findClosestByRange(FIND_STRUCTURES, {
-                filter: (structure) => structure.hits < structure.hitsMax
-                && structure.hits < 20000
-                && structure.structureType != STRUCTURE_ROAD
-            });
-            if(closestDamagedStructure) {
-                tower.repair(closestDamagedStructure);
-            }
-        }
-    }
-}
