@@ -1,5 +1,6 @@
 var util = require('util');
 
+
 var roleTransporter = {
 
     /** @param {Creep} creep **/
@@ -36,6 +37,9 @@ var roleTransporter = {
                 });
                 if(targets.length > 0) {
                     creep.memory.target = targets[0].id;
+                }
+                else {
+                    creep.memory.target = undefined;
                 }
             }
             error = creep.transfer(Game.getObjectById(creep.memory.target), RESOURCE_ENERGY);
