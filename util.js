@@ -4,7 +4,8 @@
 
 module.exports = {
     findNearestContainer(creep) {
-        return creep.pos.findClosestByRange(FIND_STRUCTURES, {
+        var pos = this.findCreepsPosition(creep);
+        return pos.findClosestByRange(FIND_STRUCTURES, {
             //Get closest container
             filter: function(object) {
                 return object.structureType == STRUCTURE_CONTAINER;
@@ -12,7 +13,8 @@ module.exports = {
         });
     },
     findNearestFullContainer(creep) {
-        return creep.pos.findClosestByRange(FIND_STRUCTURES, {
+        var pos = this.findCreepsPosition(creep);
+        return pos.findClosestByRange(FIND_STRUCTURES, {
             //Get closest container
             filter: function(object) {
                 return object.structureType == STRUCTURE_CONTAINER && object.store[RESOURCE_ENERGY] > 0;
@@ -20,7 +22,8 @@ module.exports = {
         });
     },
     findNearestEmptyContainer(creep) {
-        return creep.pos.findClosestByRange(FIND_STRUCTURES, {
+        var pos = this.findCreepsPosition(creep);
+        return pos.findClosestByRange(FIND_STRUCTURES, {
             //Get closest container
             filter: function(object) {
                 return object.structureType == STRUCTURE_CONTAINER && _.sum(object.store) < object.storeCapacity;
@@ -28,21 +31,24 @@ module.exports = {
         });
     },
     findNearestEmptyStorage(creep) {
-        return creep.pos.findClosestByRange(FIND_STRUCTURES, {
+        var pos = this.findCreepsPosition(creep);
+        return pos.findClosestByRange(FIND_STRUCTURES, {
             filter: function(object) {
                 return object.structureType == STRUCTURE_STORAGE && _.sum(object.store) < object.storeCapacity;
             }
         })
     },
     findNearestFullStorage(creep) {
-        return creep.pos.findClosestByRange(FIND_STRUCTURES, {
+        var pos = this.findCreepsPosition(creep);
+        return pos.findClosestByRange(FIND_STRUCTURES, {
             filter: function(object) {
                 return object.structureType == STRUCTURE_STORAGE && object.store[RESOURCE_ENERGY] > 0;
             }
         })  
     },
     findNearestFullContainerOrStorage(creep) {
-        return creep.pos.findClosestByRange(FIND_STRUCTURES, {
+        var pos = this.findCreepsPosition(creep);
+        return pos.findClosestByRange(FIND_STRUCTURES, {
             filter: function(object) {
                 return (object.structureType == STRUCTURE_STORAGE || object.structureType == STRUCTURE_CONTAINER) &&
                     object.store[RESOURCE_ENERGY] >= creep.carryCapacity;
@@ -50,14 +56,16 @@ module.exports = {
         });
     },
     findNearestEmptyTower(creep) {
-        return creep.pos.findClosestByRange(FIND_STRUCTURES, {
+        var pos = this.findCreepsPosition(creep);
+        return pos.findClosestByRange(FIND_STRUCTURES, {
             filter: function(object) {
                 return object.structureType == STRUCTURE_TOWER && object.energy < object.energyCapacity;
             }
         })
     },
     findNearestEmptyExtension(creep) {
-        return creep.pos.findClosestByRange(FIND_STRUCTURES, {
+        var pos = this.findCreepsPosition(creep);
+        return pos.findClosestByRange(FIND_STRUCTURES, {
             //Get closest container
             filter: function(object) {
                 return object.structureType == STRUCTURE_EXTENSION && object.energy < object.energyCapacity;
@@ -81,6 +89,14 @@ module.exports = {
                 }
             });
             if (target) return target;
+        }
+    },
+    findCreepsPosition(creep) {
+        if (creep.memory.homeSource) {
+            return Game.getObjectById(creep.memory.homeSource).pos;
+        }
+        else {
+            return creep.pos;
         }
     }
 }
