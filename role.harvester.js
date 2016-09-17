@@ -44,7 +44,11 @@ var roleHarvester = {
         }
         else {
             var dropped = creep.pos.findClosestByRange(FIND_DROPPED_ENERGY);
-            var source = creep.pos.findClosestByRange(FIND_SOURCES);
+            var pos = (creep.memory.homeSource) ? 
+                Game.getObjectById(creep.memory.homeSource).pos :
+                creep.pos;
+
+            var source = pos.findClosestByRange(FIND_SOURCES);
             if (dropped) {
                 creep.memory.target = dropped.id;
                 if(creep.pickup(Game.getObjectById(creep.memory.target)) == ERR_NOT_IN_RANGE) {
@@ -59,8 +63,9 @@ var roleHarvester = {
             }
         }
 	},
-    spawn: function(spawn) {
-        return spawn.createCreep([WORK,WORK,WORK,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE], undefined, {'role': 'harvester'});
+    spawn: function(spawn, targetId) {
+        return spawn.createCreep([WORK,WORK,WORK,WORK,CARRY,CARRY,MOVE,MOVE], undefined, {'role': 'harvester'
+            , 'homeSource': targetId });
     }
 };
 
