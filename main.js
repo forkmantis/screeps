@@ -3,6 +3,7 @@ var roleUpgrader = require('role.upgrader');
 var roleBuilder = require('role.builder');
 var roleRepairer = require('role.repairer');
 var roleWallBuilder = require('role.wallBuilder');
+var roleTransporter = require('role.transporter');
 var _ = require('lodash');
 
 module.exports.loop = function () {
@@ -31,6 +32,14 @@ module.exports.loop = function () {
         }
         autoSpawn('repairer', [WORK,WORK,CARRY,MOVE,MOVE,MOVE], 2);
         autoSpawn('wallBuilder', [WORK,WORK,CARRY,CARRY,MOVE,MOVE], 2);
+        var transporters = _.filter(Game.creeps, (creep) => creep.memory.role == 'transporter');
+        if (transporters.length < 4) {
+            var newName = roleTransporter.spawn(Game.spawns['SpawnMantis']);
+            if (_.isString(newName)) {
+                console.log('Spawning new transporter ' + newName);
+            }
+            autoSpawn('transporter', [WORK,CARRY,MOVE], 2);
+        }
     }
     
     for(var name in Game.creeps) {
@@ -49,6 +58,9 @@ module.exports.loop = function () {
         }
         if(creep.memory.role == 'wallBuilder') {
             roleWallBuilder.run(creep);
+        }
+        if(creep.memory.role == 'transporter') {
+            roleTransporter.run(creep);
         }
     }
     

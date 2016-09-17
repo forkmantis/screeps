@@ -1,3 +1,5 @@
+var util = require('util');
+
 var roleUpgrader = {
 
     /** @param {Creep} creep **/
@@ -22,12 +24,12 @@ var roleUpgrader = {
             }
         }
         else {
-            var source = creep.pos.findClosestByRange(FIND_SOURCES);
-            if (source) {
-                creep.memory.target = source.id;
-            }
-            if(creep.harvest(Game.getObjectById(creep.memory.target)) == ERR_NOT_IN_RANGE) {
-                creep.moveTo(Game.getObjectById(creep.memory.target));
+            var storage = util.findNearestFullContainerOrStorage(creep);
+            if (storage) {
+                creep.memory.target = storage.id;
+                if(creep.withdraw(Game.getObjectById(creep.memory.target), RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
+                    creep.moveTo(Game.getObjectById(creep.memory.target));
+                }
             }
         }
 	}
