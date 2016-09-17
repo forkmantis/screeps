@@ -47,7 +47,10 @@ var roleRepairer = {
                 }
             }
 	    }
-	}
+	},
+    spawn: function(spawn) {
+        return spawn.createCreep([WORK,WORK,CARRY,MOVE,MOVE,MOVE], undefined ,{'role': 'repairer'});
+    }
 };
 
 module.exports = roleRepairer;

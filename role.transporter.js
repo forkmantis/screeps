@@ -58,8 +58,9 @@ var roleTransporter = {
             }
         }
 	},
-    spawn: function(spawn) {
-        return spawn.createCreep([WORK,CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE,MOVE], undefined, {'role': 'transporter'});
+    spawn: function(spawn, targetId) {
+        return spawn.createCreep([WORK,CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE,MOVE], undefined
+            , { 'role': 'transporter', 'homeSource': targetId });
     }
 };
 
