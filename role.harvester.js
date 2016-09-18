@@ -43,19 +43,12 @@ var roleHarvester = {
             }
         }
         else {
-            var dropped = creep.pos.findClosestByRange(FIND_DROPPED_ENERGY);
             var pos = (creep.memory.homeSource) ? 
                 Game.getObjectById(creep.memory.homeSource).pos :
                 creep.pos;
 
             var source = pos.findClosestByRange(FIND_SOURCES);
-            if (dropped) {
-                creep.memory.target = dropped.id;
-                if(creep.pickup(Game.getObjectById(creep.memory.target)) == ERR_NOT_IN_RANGE) {
-                    creep.moveTo(Game.getObjectById(creep.memory.target));
-                }
-            }
-            else if (source) {
+            if (source) {
                 creep.memory.target = source.id;
                 if(creep.harvest(Game.getObjectById(creep.memory.target)) == ERR_NOT_IN_RANGE) {
                     creep.moveTo(Game.getObjectById(creep.memory.target));
