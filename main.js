@@ -15,10 +15,35 @@ module.exports.loop = function () {
         }
     }
 
+    var sourceCounts = {};
+    _.filter(Game.rooms['W28N27'].find(FIND_SOURCES)).map(function(source) { sourceCounts[source.id] = 3;});
+    
+    var harvesterCounts = {};
+
+    _.filter(Game.creeps, (c) => c.memory.role === 'harvester').map(function(c) {var a = c.memory.homeSource; 
+        if (a in harvesterCounts) {
+            harvesterCounts[a]++;
+        }
+        else {
+            harvesterCounts[a] = 1;
+        }
+    });
+    for (var c in sourceCounts) {
+        if (c in harvesterCounts) {
+            sourceCounts[c] = sourceCounts[c] - harvesterCounts[c];
+        }
+    }
+    var harvesterSource;
+    for (var src in sourceCounts) {
+        if (sourceCounts[src] > 0) {
+             harvesterSource = src;
+        }
+    }
+ 
     var desiredHarvesters = 6;
     var harvesters = _.filter(Game.creeps, (creep) => creep.memory.role == 'harvester');
     if (harvesters.length < desiredHarvesters) {
-        var newName = roleHarvester.spawn(Game.spawns['SpawnMantis']);
+        var newName = roleHarvester.spawn(Game.spawns['SpawnMantis'], harvesterSource);
         if (_.isString(newName)) {
             console.log('Spawning new harvester ' + newName);
         }
