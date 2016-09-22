@@ -16,7 +16,7 @@ module.exports.loop = function () {
     }
 
     var sourceCounts = {};
-    _.filter(Game.rooms['W28N27'].find(FIND_SOURCES)).map(function(source) { sourceCounts[source.id] = 3;});
+    _.filter(Game.rooms['W28N27'].find(FIND_SOURCES)).map(function(source) { sourceCounts[source.id] = 2;});
     
     var harvesterCounts = {};
 
