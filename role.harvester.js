@@ -57,7 +57,7 @@ var roleHarvester = {
         }
 	},
     spawn: function(spawn, targetId) {
-        return spawn.createCreep([WORK,WORK,WORK,WORK,WORK,CARRY,CARRY,MOVE,MOVE], undefined, {'role': 'harvester'
+        return spawn.createCreep([WORK,WORK,WORK,WORK,CARRY,CARRY,MOVE,MOVE], undefined, {'role': 'harvester'
             , 'homeSource': targetId });
     }
 };
