@@ -40,7 +40,7 @@ module.exports.loop = function () {
         }
     }
  
-    var desiredHarvesters = 6;
+    var desiredHarvesters = 4;
     var harvesters = _.filter(Game.creeps, (creep) => creep.memory.role == 'harvester');
     if (harvesters.length < desiredHarvesters) {
         var newName = roleHarvester.spawn(Game.spawns['SpawnMantis'], harvesterSource);
