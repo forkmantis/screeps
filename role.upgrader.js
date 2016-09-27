@@ -34,8 +34,11 @@ var roleUpgrader = {
         }
 	},
     spawn: function(spawn, targetId) {
-        return spawn.createCreep([WORK,WORK,WORK,CARRY,CARRY,MOVE], undefined, {'role': 'upgrader'
-            , 'homeSource': targetId });
+        return spawn.createCreep(
+            [WORK,WORK,WORK,WORK,CARRY,CARRY,WORK,WORK,WORK,CARRY,CARRY,MOVE,MOVE]
+            , undefined
+            , {'role': 'upgrader', 'homeSource': targetId }
+        );
     }
 };
 
