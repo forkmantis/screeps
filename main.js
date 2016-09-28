@@ -4,6 +4,7 @@ var roleBuilder = require('role.builder');
 var roleRepairer = require('role.repairer');
 var roleWallBuilder = require('role.wallBuilder');
 var roleTransporter = require('role.transporter');
+var roleMiner = require('role.miner');
 var _ = require('lodash');
 
 module.exports.loop = function () {
@@ -65,6 +66,12 @@ module.exports.loop = function () {
             }
             autoSpawn('transporter', [WORK,CARRY,MOVE], 2);
         }
+        if (_.sum(Game.creeps, (c) => c.memory.role == 'miner') < 1) {
+            var newName = roleMiner.spawn(Game.spawns['SpawnMantis']);
+            if (_.isString(newName)) {
+                console.log('Spawning new miner ' + newName);
+            }
+        }
     }
     
     for(var name in Game.creeps) {
@@ -86,6 +93,9 @@ module.exports.loop = function () {
         }
         if(creep.memory.role == 'transporter') {
             roleTransporter.run(creep);
+        }
+        if(creep.memory.role == 'miner') {
+            roleMiner.run(creep);
         }
     }
     
