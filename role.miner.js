@@ -5,11 +5,11 @@ var roleMiner = {
     /** @param {Creep} creep **/
     run: function(creep) {
         
-        if(creep.memory.delivering && _.sum(creep.carry) < creep.carryCapacity) {
+        if(creep.memory.delivering && _.sum(creep.carry) == 0) {
             creep.memory.delivering = false;
             creep.say('mining');
         }
-        if(!creep.memory.delivering && _.sum(creep.carry) == creep.carryCapacity) {
+        if(!creep.memory.delivering && _.sum(creep.carry) > 0) {
 	        var flag = creep.pos.findClosestByRange(FIND_FLAGS);
 	        if (flag) {
 	            creep.moveTo(flag.id);    
@@ -39,7 +39,7 @@ var roleMiner = {
         }
 	},
     spawn: function(spawn) {
-        return spawn.createCreep([WORK,WORK,WORK,WORK,WORK,CARRY,MOVE,MOVE,MOVE], undefined, {'role': 'miner'});
+        return spawn.createCreep([WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,CARRY,MOVE,MOVE,MOVE,MOVE,MOVE], undefined, {'role': 'miner'});
     }
 };
 
