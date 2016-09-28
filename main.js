@@ -16,91 +16,91 @@ module.exports.loop = function () {
         }
     }
 
-    var sourceCounts = {};
-    _.filter(Game.rooms['W28N27'].find(FIND_SOURCES)).map(function(source) { sourceCounts[source.id] = 2;});
-    
-    var harvesterCounts = {};
+    for(var roomName in Game.rooms) {
+        var room = Game.rooms[roomName];
 
-    _.filter(Game.creeps, (c) => c.memory.role === 'harvester').map(function(c) {var a = c.memory.homeSource; 
-        if (a in harvesterCounts) {
-            harvesterCounts[a]++;
+        var sourceCounts = {};
+        _.filter(room.find(FIND_SOURCES)).map(function(source) { sourceCounts[source.id] = 2;});
+
+        var harvesterCounts = {};
+
+        _.filter(Game.creeps, (c) => c.memory.role === 'harvester').map(function(c) {var a = c.memory.homeSource; 
+            if (a in harvesterCounts) {
+                harvesterCounts[a]++;
+            }
+            else {
+                harvesterCounts[a] = 1;
+            }
+        });
+        for (var c in sourceCounts) {
+            if (c in harvesterCounts) {
+                sourceCounts[c] = sourceCounts[c] - harvesterCounts[c];
+            }
+        }
+        var harvesterSource;
+        for (var src in sourceCounts) {
+            if (sourceCounts[src] > 0) {
+                 harvesterSource = src;
+            }
+        }
+     
+        var desiredHarvesters = 4;
+        var harvesters = _.filter(Game.creeps, (creep) => creep.memory.role == 'harvester');
+        if (harvesters.length < desiredHarvesters) {
+            var newName = roleHarvester.spawn(Game.spawns['SpawnMantis'], harvesterSource);
+            if (_.isString(newName)) {
+                console.log('Spawning new harvester ' + newName);
+            }
+            autoSpawn('harvester', [WORK,CARRY,MOVE], 2);
         }
         else {
-            harvesterCounts[a] = 1;
-        }
-    });
-    for (var c in sourceCounts) {
-        if (c in harvesterCounts) {
-            sourceCounts[c] = sourceCounts[c] - harvesterCounts[c];
-        }
-    }
-    var harvesterSource;
-    for (var src in sourceCounts) {
-        if (sourceCounts[src] > 0) {
-             harvesterSource = src;
-        }
-    }
- 
-    var desiredHarvesters = 4;
-    var harvesters = _.filter(Game.creeps, (creep) => creep.memory.role == 'harvester');
-    if (harvesters.length < desiredHarvesters) {
-        var newName = roleHarvester.spawn(Game.spawns['SpawnMantis'], harvesterSource);
-        if (_.isString(newName)) {
-            console.log('Spawning new harvester ' + newName);
-        }
-        autoSpawn('harvester', [WORK,CARRY,MOVE], 2);
-    }
-    else {
-        autoSpawn('upgrader', [WORK,WORK,WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY,CARRY,MOVE,MOVE], 2);
-        var constructionSiteCount = Game.rooms['W28N27'].find(FIND_CONSTRUCTION_SITES).length
-        if( constructionSiteCount > 0) {
-            autoSpawn('builder', [WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,CARRY,CARRY,MOVE,MOVE,MOVE,MOVE], constructionSiteCount > 0 ? 1 : 0);
-        }
-        autoSpawn('repairer', [WORK,WORK,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE,MOVE], 1);
-        autoSpawn('wallBuilder', [WORK,WORK,CARRY,CARRY,MOVE,MOVE], 2);
-        var transporters = _.filter(Game.creeps, (creep) => creep.memory.role == 'transporter');
-        if (transporters.length < 2) {
-            var newName = roleTransporter.spawn(Game.spawns['SpawnMantis']);
-            if (_.isString(newName)) {
-                console.log('Spawning new transporter ' + newName);
+            autoSpawn('upgrader', [WORK,WORK,WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY,CARRY,MOVE,MOVE], 2);
+            var constructionSiteCount = room.find(FIND_CONSTRUCTION_SITES).length
+            if( constructionSiteCount > 0) {
+                autoSpawn('builder', [WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,CARRY,CARRY,MOVE,MOVE,MOVE,MOVE], constructionSiteCount > 0 ? 1 : 0);
             }
-            autoSpawn('transporter', [WORK,CARRY,MOVE], 2);
-        }
-        if (_.sum(Game.creeps, (c) => c.memory.role == 'miner') < 1) {
-            var newName = roleMiner.spawn(Game.spawns['SpawnMantis']);
-            if (_.isString(newName)) {
-                console.log('Spawning new miner ' + newName);
+            autoSpawn('repairer', [WORK,WORK,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE,MOVE], 1);
+            autoSpawn('wallBuilder', [WORK,WORK,CARRY,CARRY,MOVE,MOVE], 2);
+            var transporters = _.filter(Game.creeps, (creep) => creep.memory.role == 'transporter');
+            if (transporters.length < 2) {
+                var newName = roleTransporter.spawn(Game.spawns['SpawnMantis']);
+                if (_.isString(newName)) {
+                    console.log('Spawning new transporter ' + newName);
+                }
+                autoSpawn('transporter', [WORK,CARRY,MOVE], 2);
+            }
+            if (_.sum(Game.creeps, (c) => c.memory.role == 'miner') < 1) {
+                var newName = roleMiner.spawn(Game.spawns['SpawnMantis']);
+                if (_.isString(newName)) {
+                    console.log('Spawning new miner ' + newName);
+                }
             }
         }
-    }
-    
-    for(var name in Game.creeps) {
-        var creep = Game.creeps[name];
-        if(creep.memory.role == 'harvester') {
-            roleHarvester.run(creep);
+        
+        for(var name in Game.creeps) {
+            var creep = Game.creeps[name];
+            if(creep.memory.role == 'harvester') {
+                roleHarvester.run(creep);
+            }
+            if(creep.memory.role == 'upgrader') {
+                roleUpgrader.run(creep);
+            }
+            if(creep.memory.role == 'builder') {
+                roleBuilder.run(creep);
+            }
+            if(creep.memory.role == 'repairer') {
+                roleRepairer.run(creep);
+            }
+            if(creep.memory.role == 'wallBuilder') {
+                roleWallBuilder.run(creep);
+            }
+            if(creep.memory.role == 'transporter') {
+                roleTransporter.run(creep);
+            }
+            if(creep.memory.role == 'miner') {
+                roleMiner.run(creep);
+            }
         }
-        if(creep.memory.role == 'upgrader') {
-            roleUpgrader.run(creep);
-        }
-        if(creep.memory.role == 'builder') {
-            roleBuilder.run(creep);
-        }
-        if(creep.memory.role == 'repairer') {
-            roleRepairer.run(creep);
-        }
-        if(creep.memory.role == 'wallBuilder') {
-            roleWallBuilder.run(creep);
-        }
-        if(creep.memory.role == 'transporter') {
-            roleTransporter.run(creep);
-        }
-        if(creep.memory.role == 'miner') {
-            roleMiner.run(creep);
-        }
-    }
-    
-    for (var name in Game.rooms) {
-        var room = Game.rooms[name];
 
         var towers = room.find(FIND_MY_STRUCTURES, { filter: (tower) => tower.structureType == STRUCTURE_TOWER});
         for(var name in towers) {
