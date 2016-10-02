@@ -47,7 +47,7 @@ var roleWallBuilder = {
 	    }
 	},
     spawn: function(spawn) {
-        return spawn.createCreep([WORK,WORK,CARRY,CARRY,MOVE,MOVE], undefined, {'role': 'wallBuilder'});
+        return spawn.createCreep([WORK,WORK,CARRY,CARRY,MOVE,MOVE], undefined, {'role': 'wallBuilder', 'assignedRoom': spawn.room.name});
     }
 };
 

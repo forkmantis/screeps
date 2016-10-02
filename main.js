@@ -52,23 +52,23 @@ module.exports.loop = function () {
             if (_.isString(newName)) {
                 console.log('Spawning new harvester ' + newName);
             }
-            autoSpawn('harvester', [WORK,CARRY,MOVE], 2);
+            autoSpawn('harvester', [WORK,CARRY,MOVE], 2, room);
         }
         else {
-            autoSpawn('upgrader', [WORK,WORK,WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY,CARRY,MOVE,MOVE], 2);
+            autoSpawn('upgrader', [WORK,WORK,WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY,CARRY,MOVE,MOVE], 2, room);
             var constructionSiteCount = room.find(FIND_CONSTRUCTION_SITES).length
             if( constructionSiteCount > 0) {
-                autoSpawn('builder', [WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,CARRY,CARRY,MOVE,MOVE,MOVE,MOVE], constructionSiteCount > 0 ? 2 : 0);
+                autoSpawn('builder', [WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,CARRY,CARRY,MOVE,MOVE,MOVE,MOVE], constructionSiteCount > 0 ? 2 : 0, room);
             }
-            autoSpawn('repairer', [WORK,WORK,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE,MOVE], 1);
-            autoSpawn('wallBuilder', [WORK,WORK,CARRY,CARRY,MOVE,MOVE], 1);
+            autoSpawn('repairer', [WORK,WORK,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE,MOVE], 1, room);
+            autoSpawn('wallBuilder', [WORK,WORK,CARRY,CARRY,MOVE,MOVE], 1, room);
             var transporters = _.filter(Game.creeps, (creep) => creep.memory.role == 'transporter');
             if (transporters.length < 2) {
                 var newName = roleTransporter.spawn(Game.spawns['SpawnMantis']);
                 if (_.isString(newName)) {
                     console.log('Spawning new transporter ' + newName);
                 }
-                autoSpawn('transporter', [WORK,CARRY,MOVE], 2);
+                autoSpawn('transporter', [WORK,CARRY,MOVE], 2, room);
             }
             if (_.sum(Game.creeps, (c) => c.memory.role == 'miner') < 1) {
                 var newName = roleMiner.spawn(Game.spawns['SpawnMantis']);
@@ -132,13 +132,18 @@ module.exports.loop = function () {
     }
 }
 
-function autoSpawn(role, attributes, quantity) {
+function autoSpawn(role, attributes, quantity, room) {
     var spawns = _.filter(Game.creeps, (creep) => creep.memory.role == role);
 
+
     if (spawns.length < quantity) {
-        var newName = Game.spawns['SpawnMantis'].createCreep(attributes, undefined, {'role': role});
+        var newName = Game.spawns['SpawnMantis'].createCreep(attributes, undefined, 
+            {
+                'role': role,
+                'assignedRoom': room.name
+            });
         if (_.isString(newName)) {
-            console.log('Spawning new ' + role + ' ' + newName);
+            console.log('Spawning new ' + role + ' ' + newName + ' into ' + room.name);
         }
     }
 }

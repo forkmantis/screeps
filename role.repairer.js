@@ -49,7 +49,7 @@ var roleRepairer = {
 	    }
 	},
     spawn: function(spawn) {
-        return spawn.createCreep([WORK,WORK,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE,MOVE], undefined ,{'role': 'repairer'});
+        return spawn.createCreep([WORK,WORK,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE,MOVE], undefined ,{'role': 'repairer', 'assignedRoom': spawn.room.name});
     }
 };
 

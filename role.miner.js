@@ -39,7 +39,7 @@ var roleMiner = {
         }
 	},
     spawn: function(spawn) {
-        return spawn.createCreep([WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,CARRY,MOVE,MOVE,MOVE,MOVE,MOVE], undefined, {'role': 'miner'});
+        return spawn.createCreep([WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,CARRY,MOVE,MOVE,MOVE,MOVE,MOVE], undefined, {'role': 'miner', 'assignedRoom': spawn.room.name});
     }
 };
 
