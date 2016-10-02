@@ -122,6 +122,9 @@ module.exports.loop = function () {
                 }
             }
         }
+
+
+        distributeLinkEnergy(room);
     }
 }
 
@@ -136,3 +139,32 @@ function autoSpawn(role, attributes, quantity) {
     }
 }
 
+function distributeLinkEnergy(room) {
+    var fullLink = _.first(
+        room.find(FIND_STRUCTURES, { 
+            filter: function(x) { 
+                return x.structureType == STRUCTURE_LINK &&
+                    x.energy == x.energyCapacity; 
+                } 
+            }
+        )
+    );
+
+
+    if (fullLink) {
+        var emptyLink = _.last(
+            _.sortBy(
+                room.find(FIND_STRUCTURES, { 
+                    filter: function(x) { 
+                        return x.structureType == STRUCTURE_LINK &&
+                            x.energy < x.energyCapacity; 
+                        } 
+                    }
+                )
+            , ['energy'])
+        );
+        if (emptyLink) {
+            fullLink.transferEnergy(emptyLink);
+        }
+    }
+}
