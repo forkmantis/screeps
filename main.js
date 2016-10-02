@@ -5,6 +5,7 @@ var roleRepairer = require('role.repairer');
 var roleWallBuilder = require('role.wallBuilder');
 var roleTransporter = require('role.transporter');
 var roleMiner = require('role.miner');
+var roleScout = require('role.scout');
 var _ = require('lodash');
 
 module.exports.loop = function () {
@@ -99,6 +100,9 @@ module.exports.loop = function () {
             }
             if(creep.memory.role == 'miner') {
                 roleMiner.run(creep);
+            }
+            if(creep.memory.role == 'scout') {
+                roleScout.run(creep);
             }
         }
 
