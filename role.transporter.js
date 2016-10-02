@@ -22,11 +22,15 @@ var roleTransporter = {
         if(creep.memory.transporting) {
             var targetExtension = util.findNearestEmptyExtension(creep);
             var targetTurret = util.findNearestEmptyTower(creep);
+            var targetLink = findInLink(creep);
             if (targetExtension) {
                 creep.memory.target = targetExtension.id;
             }
             else if (targetTurret) {
                 creep.memory.target = targetTurret.id;
+            }
+            else if (targetLink) {
+                creep.memory.target = targetLink;
             }
             else {
                 var targets = creep.room.find(FIND_STRUCTURES, {
@@ -62,5 +66,17 @@ var roleTransporter = {
             , { 'role': 'transporter', 'homeSource': targetId });
     }
 };
+
+function findInLink(creep) {
+    var link = _.first(creep.pos.findInRange(FIND_STRUCTURES, 7, {
+        filter: function(x) {
+            return x.structureType == STRUCTURE_LINK && x.energy < x.energyCapacity;
+        }
+    }));
+    if (link) {
+        return link.id;
+    }
+    return undefined;
+}
 
 module.exports = roleTransporter;
