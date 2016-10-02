@@ -50,8 +50,10 @@ module.exports = {
         var pos = this.findCreepsPosition(creep);
         return pos.findClosestByRange(FIND_STRUCTURES, {
             filter: function(object) {
-                return (object.structureType == STRUCTURE_STORAGE || object.structureType == STRUCTURE_CONTAINER) &&
-                    object.store[RESOURCE_ENERGY] >= creep.carryCapacity;
+                return ((object.structureType == STRUCTURE_STORAGE 
+                    || object.structureType == STRUCTURE_CONTAINER) &&
+                    object.store[RESOURCE_ENERGY] >= creep.carryCapacity) ||
+                    (object.structureType == STRUCTURE_LINK && object.energy >= creep.carryCapacity);
             }
         });
     },
