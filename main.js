@@ -58,10 +58,10 @@ module.exports.loop = function () {
             autoSpawn('upgrader', [WORK,WORK,WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY,CARRY,MOVE,MOVE], 2);
             var constructionSiteCount = room.find(FIND_CONSTRUCTION_SITES).length
             if( constructionSiteCount > 0) {
-                autoSpawn('builder', [WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,CARRY,CARRY,MOVE,MOVE,MOVE,MOVE], constructionSiteCount > 0 ? 1 : 0);
+                autoSpawn('builder', [WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,CARRY,CARRY,MOVE,MOVE,MOVE,MOVE], constructionSiteCount > 0 ? 2 : 0);
             }
             autoSpawn('repairer', [WORK,WORK,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE,MOVE], 1);
-            autoSpawn('wallBuilder', [WORK,WORK,CARRY,CARRY,MOVE,MOVE], 2);
+            autoSpawn('wallBuilder', [WORK,WORK,CARRY,CARRY,MOVE,MOVE], 1);
             var transporters = _.filter(Game.creeps, (creep) => creep.memory.role == 'transporter');
             if (transporters.length < 2) {
                 var newName = roleTransporter.spawn(Game.spawns['SpawnMantis']);
