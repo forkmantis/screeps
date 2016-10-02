@@ -31,6 +31,15 @@ var roleUpgrader = {
                     creep.moveTo(Game.getObjectById(creep.memory.target));
                 }
             }
+            else {
+                var source = creep.pos.findClosestByRange(FIND_SOURCES);
+                if (source) {
+                    creep.memory.target = source.id;
+                }
+                if(creep.harvest(Game.getObjectById(creep.memory.target)) == ERR_NOT_IN_RANGE) {
+                    creep.moveTo(Game.getObjectById(creep.memory.target));
+                }
+            }
         }
 	},
     spawn: function(spawn, targetId) {
