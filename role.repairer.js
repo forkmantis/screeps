@@ -49,8 +49,26 @@ var roleRepairer = {
 	    }
 	},
     spawn: function(spawn) {
-        return spawn.createCreep([WORK,WORK,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE,MOVE], undefined ,{'role': 'repairer', 'assignedRoom': spawn.room.name});
+        return spawn.createCreep(getComponents(spawn.room), undefined ,{'role': 'repairer', 'assignedRoom': spawn.room.name});
     }
 };
+
+function getComponents(room) {
+    if (room.energyCapacityAvailable >= 1800) {
+        return [WORK,WORK,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE,MOVE];
+    }
+    else if (room.energyCapacityAvailable >= 1300) {
+        return [WORK,WORK,CARRY,CARRY,MOVE,MOVE,MOVE];
+    }
+    else if (room.energyCapacityAvailable >= 800) {
+        return [WORK,WORK,CARRY,CARRY,MOVE,MOVE];
+    }
+    else if (room.energyCapacityAvailable >= 450) {
+        return [WORK,WORK,CARRY,MOVE];
+    }
+    else if (room.energyCapacityAvailable >= 300) {
+        return [WORK,CARRY,MOVE];
+    }
+}
 
 module.exports = roleRepairer;

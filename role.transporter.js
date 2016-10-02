@@ -62,10 +62,25 @@ var roleTransporter = {
         }
 	},
     spawn: function(spawn, targetId) {
-        return spawn.createCreep([WORK,CARRY,CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE,MOVE,MOVE], undefined
+        return spawn.createCreep(getComponents(spawn.room), undefined
             , { 'role': 'transporter', 'homeSource': targetId, 'assignedRoom': spawn.room.name });
     }
 };
+
+function getComponents(room) {
+    if (room.energyCapacityAvailable >= 1300) {
+        return [WORK,CARRY,CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE,MOVE,MOVE];
+    }
+    else if (room.energyCapacityAvailable >= 800) {
+        return [WORK,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE];
+    }
+    else if (room.energyCapacityAvailable >= 450) {
+        return [WORK,CARRY,CARRY,MOVE];
+    }
+    else if (room.energyCapacityAvailable >= 300) {
+        return [WORK,CARRY,MOVE];
+    }
+}
 
 function findInLink(creep) {
     var link = _.first(creep.pos.findInRange(FIND_STRUCTURES, 7, {

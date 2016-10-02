@@ -47,8 +47,26 @@ var roleBuilder = {
 	    }
 	},
     spawn: function(spawn) {
-        return spawn.createCreep([WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,CARRY,CARRY,MOVE,MOVE,MOVE,MOVE], undefined, {'role': 'harvester', 'assignedRoom': spawn.room.name});
+        return spawn.createCreep(getComonents(spawn.room), undefined, {'role': 'harvester', 'assignedRoom': spawn.room.name});
     }
 };
+
+function getComponents(room) {
+    if (room.energyCapacityAvailable >= 1800) {
+        return [WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,CARRY,CARRY,MOVE,MOVE,MOVE,MOVE];
+    }
+    else if (room.energyCapacityAvailable >= 1300) {
+        return [WORK,WORK,WORK,CARRY,CARRY,CARRY,MOVE,CARRY,MOVE,MOVE,MOVE];
+    }
+    else if (room.energyCapacityAvailable >= 800) {
+        return [WORK,WORK,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE];
+    }
+    else if (room.energyCapacityAvailable >= 450) {
+        return [WORK,CARRY,CARRY,MOVE,MOVE];
+    }
+    else if (room.energyCapacityAvailable >= 300) {
+        return [WORK,CARRY,MOVE];
+    }
+}
 
 module.exports = roleBuilder;

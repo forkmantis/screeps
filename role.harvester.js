@@ -57,9 +57,24 @@ var roleHarvester = {
         }
 	},
     spawn: function(spawn, targetId) {
-        return spawn.createCreep([WORK,WORK,WORK,CARRY,CARRY,MOVE,MOVE], undefined, {'role': 'harvester'
+        return spawn.createCreep(getComponents(spawn.room), undefined, {'role': 'harvester'
             , 'homeSource': targetId, 'assignedRoom': spawn.room.name });
-    }
+    },
 };
+
+function getComponents(room) {
+    if (room.energyCapacityAvailable >= 1300) {
+        return [WORK,WORK,WORK,CARRY,CARRY,MOVE,MOVE];
+    }
+    else if (room.energyCapacityAvailable >= 800) {
+        return [WORK,WORK,CARRY,CARRY,MOVE,MOVE];
+    }
+    else if (room.energyCapacityAvailable >= 450) {
+        return [WORK,WORK,CARRY,MOVE];
+    }
+    else if (room.energyCapacityAvailable >= 300) {
+        return [WORK,CARRY,MOVE];
+    }
+}
 
 module.exports = roleHarvester;

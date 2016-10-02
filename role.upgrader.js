@@ -44,11 +44,26 @@ var roleUpgrader = {
 	},
     spawn: function(spawn, targetId) {
         return spawn.createCreep(
-            [WORK,WORK,WORK,WORK,CARRY,CARRY,WORK,WORK,WORK,CARRY,CARRY,MOVE,MOVE]
+            getComponents(spawn.room)
             , undefined
             , {'role': 'upgrader', 'homeSource': targetId }
         );
     }
 };
+
+function getComponents(room) {
+    if (room.energyCapacityAvailable >= 1300) {
+        return [WORK,WORK,WORK,WORK,CARRY,CARRY,WORK,WORK,WORK,CARRY,CARRY,MOVE,MOVE];
+    }
+    else if (room.energyCapacityAvailable >= 800) {
+        return [WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY,MOVE,MOVE];
+    }
+    else if (room.energyCapacityAvailable >= 450) {
+        return [WORK,WORK,CARRY,MOVE,MOVE];
+    }
+    else if (room.energyCapacityAvailable >= 300) {
+        return [WORK,CARRY,MOVE];
+    }
+}
 
 module.exports = roleUpgrader;
