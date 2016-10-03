@@ -19,8 +19,14 @@ var roleMiner = {
         }
 
         if(creep.memory.delivering) {
+            var targetTerminal = _.first(creep.room.find(FIND_STRUCTURES, { filter: function(x) {
+                return x.structureType == STRUCTURE_TERMINAL;
+            }}));
             var targetStorage = util.findNearestEmptyStorage(creep);
-            if (targetStorage) {
+            if (targetTerminal) {
+                creep.memory.target = targetTerminal.id;
+            }
+            else if (targetStorage) {
                 creep.memory.target = targetStorage.id;
             }
 
