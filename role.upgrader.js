@@ -48,22 +48,22 @@ var roleUpgrader = {
             , undefined
             , {'role': 'upgrader', 'homeSource': targetId }
         );
+    },
+    getComponents: function(room) {
+        if (room.energyCapacityAvailable >= 1300) {
+            return [WORK,WORK,WORK,WORK,CARRY,CARRY,WORK,WORK,WORK,CARRY,CARRY,MOVE,MOVE];
+        }
+        else if (room.energyCapacityAvailable >= 800) {
+            return [WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY,MOVE,MOVE];
+        }
+        else if (room.energyCapacityAvailable >= 450) {
+            return [WORK,WORK,CARRY,MOVE,MOVE];
+        }
+        else if (room.energyCapacityAvailable >= 300) {
+            return [WORK,CARRY,MOVE];
+        }
     }
 };
 
-function getComponents(room) {
-    if (room.energyCapacityAvailable >= 1300) {
-        return [WORK,WORK,WORK,WORK,CARRY,CARRY,WORK,WORK,WORK,CARRY,CARRY,MOVE,MOVE];
-    }
-    else if (room.energyCapacityAvailable >= 800) {
-        return [WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY,MOVE,MOVE];
-    }
-    else if (room.energyCapacityAvailable >= 450) {
-        return [WORK,WORK,CARRY,MOVE,MOVE];
-    }
-    else if (room.energyCapacityAvailable >= 300) {
-        return [WORK,CARRY,MOVE];
-    }
-}
 
 module.exports = roleUpgrader;

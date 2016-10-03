@@ -48,22 +48,21 @@ var roleWallBuilder = {
 	},
     spawn: function(spawn) {
         return spawn.createCreep(getComponents(spawn.room), undefined, {'role': 'wallBuilder', 'assignedRoom': spawn.room.name});
+    },
+    getComponents: function(room) {
+        if (room.energyCapacityAvailable >= 1300) {
+            return [WORK,WORK,CARRY,CARRY,MOVE,MOVE];
+        }
+        else if (room.energyCapacityAvailable >= 800) {
+            return [WORK,WORK,CARRY,CARRY,MOVE,MOVE];
+        }
+        else if (room.energyCapacityAvailable >= 450) {
+            return [WORK,WORK,CARRY,MOVE];
+        }
+        else if (room.energyCapacityAvailable >= 300) {
+            return [WORK,CARRY,MOVE];
+        }
     }
 };
-
-function getComponents(room) {
-    if (room.energyCapacityAvailable >= 1300) {
-        return [WORK,WORK,CARRY,CARRY,MOVE,MOVE];
-    }
-    else if (room.energyCapacityAvailable >= 800) {
-        return [WORK,WORK,CARRY,CARRY,MOVE,MOVE];
-    }
-    else if (room.energyCapacityAvailable >= 450) {
-        return [WORK,WORK,CARRY,MOVE];
-    }
-    else if (room.energyCapacityAvailable >= 300) {
-        return [WORK,CARRY,MOVE];
-    }
-}
 
 module.exports = roleWallBuilder;

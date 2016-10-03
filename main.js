@@ -21,8 +21,11 @@ module.exports.loop = function () {
         var room = Game.rooms[roomName];
         var spawn = room.find(FIND_STRUCTURES, { filter: function(x) { return x.structureType == STRUCTURE_SPAWN; }})[0];
         room.memory.spawnName = spawn.name;
+        if (room.memory.sourceCount == undefined) {
+            room.memory.sourceCount = room.find(FIND_SOURCES).length;
+        }
 
-        var desiredHarvesters = 4;
+        var desiredHarvesters = 2 * room.memory.sourceCount;
      
         var harvesters = _.filter(Game.creeps, (creep) => creep.memory.role == 'harvester' && creep.memory.assignedRoom == room.name);
         if (harvesters.length < desiredHarvesters) {
@@ -30,16 +33,15 @@ module.exports.loop = function () {
             if (_.isString(newName)) {
                 console.log('Spawning new harvester ' + newName);
             }
-            autoSpawn('harvester', [WORK,CARRY,MOVE], 2, room);
         }
         else {
-            autoSpawn('upgrader', [WORK,WORK,WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY,CARRY,MOVE,MOVE], 2, room);
+            autoSpawn('upgrader', roleUpgrader.getComponents(room), 2, room);
             var constructionSiteCount = room.find(FIND_CONSTRUCTION_SITES).length
             if( constructionSiteCount > 0) {
-                autoSpawn('builder', [WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,CARRY,CARRY,MOVE,MOVE,MOVE,MOVE], constructionSiteCount > 0 ? 2 : 0, room);
+                autoSpawn('builder', roleBuilder.getComponents(room), constructionSiteCount > 0 ? 2 : 0, room);
             }
-            autoSpawn('repairer', [WORK,WORK,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE,MOVE], 1, room);
-            autoSpawn('wallBuilder', [WORK,WORK,CARRY,CARRY,MOVE,MOVE], 1, room);
+            autoSpawn('repairer', roleRepairer.getComponents(room), 1, room);
+            autoSpawn('wallBuilder', roleWallBuilder.getComponents(room), 1, room);
             var transporters = _.filter(Game.creeps, (creep) => creep.memory.role == 'transporter' && creep.memory.assignedRoom == room.name);
             if (transporters.length < 2) {
                 var newName = roleTransporter.spawn(spawn);
@@ -110,7 +112,7 @@ module.exports.loop = function () {
     }
 }
 
-function autoSpawn(role, attributes, quantity, room) {
+function autoSpawn(role, attributes, quantity, room, creepRole) {
     var spawns = _.filter(Game.creeps, (creep) => creep.memory.role == role && creep.memory.assignedRoom == room.name);
     var spawn = Game.spawns[room.memory.spawnName];
 
@@ -122,6 +124,10 @@ function autoSpawn(role, attributes, quantity, room) {
             });
         if (_.isString(newName)) {
             console.log('Spawning new ' + role + ' ' + newName + ' into ' + room.name);
+        }
+        else {
+            console.log('Unable to spawn ' + role + ' in ' + room.name + ' because of error ' + newName);
+            console.log('Roomm energyCapacityAvailable is ' + room.energyCapacityAvailable);
         }
     }
 }
