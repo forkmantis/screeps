@@ -82,15 +82,24 @@ module.exports = {
         })
     },
     findNearestRepairBarrier(creep) {
-        var target = null;
-        for (var i = 500; i <= 3000000; i += 20000) {
-            target = creep.pos.findClosestByRange(FIND_STRUCTURES, {
-                filter: function(object) {
-                    return (object.structureType == STRUCTURE_WALL || object.structureType == STRUCTURE_RAMPART) &&
-                        object.hits < object.hitsMax && object.hits < i;
-                }
-            });
-            if (target) return target;
+        var barrierLevel = creep.room.memory.barrierLevel;
+
+        if (barrierLevel == undefined) creep.room.memory.barrierLevel = 10000;
+
+        target = creep.pos.findClosestByRange(FIND_STRUCTURES, {
+            filter: function(object) {
+                return (object.structureType == STRUCTURE_WALL || object.structureType == STRUCTURE_RAMPART) &&
+                    object.hits < object.hitsMax && object.hits < barrierLevel;
+            }
+        });
+
+        if (target) {
+            if (target.hits < barrierLevel - 20000) creep.room.memory.barrierLevel = target.hits + 20000;
+            return target;
+        }
+        else {
+            creep.room.memory.barrierLevel += 20000;
+            return findNearestRepairBarrier(creep);
         }
     },
     findCreepsPosition(creep) {
