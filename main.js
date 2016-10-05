@@ -143,17 +143,19 @@ function distributeLinkEnergy(room) {
 
 
     if (fullLink) {
-        var emptyLink = _.last(
+        var emptyLink = _.first(
             _.sortBy(
-                room.find(FIND_STRUCTURES, { 
+                room.find(FIND_MY_STRUCTURES, { 
                     filter: function(x) { 
                         return x.structureType == STRUCTURE_LINK &&
+                            x.energyCapacity == 800 // for some reason extensions are counting as STRUCTURE_LINK
                             x.energy < x.energyCapacity; 
                         } 
                     }
                 )
             , ['energy'])
         );
+
         if (emptyLink) {
             fullLink.transferEnergy(emptyLink);
         }
