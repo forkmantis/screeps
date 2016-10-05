@@ -51,7 +51,7 @@ var roleWallBuilder = {
     },
     getComponents: function(room) {
         if (room.energyCapacityAvailable >= 1300) {
-            return [WORK,WORK,CARRY,CARRY,MOVE,MOVE];
+            return [WORK,WORK,CARRY,CARRY,MOVE,MOVE,MOVE];
         }
         else if (room.energyCapacityAvailable >= 800) {
             return [WORK,WORK,CARRY,CARRY,MOVE,MOVE];
