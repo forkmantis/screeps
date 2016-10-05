@@ -10,19 +10,21 @@ var roleBuilder = {
             creep.say('harvesting');
 	    }
 	    if(!creep.memory.building && creep.carry.energy == creep.carryCapacity) {
-	        var flag = creep.pos.findClosestByRange(FIND_FLAGS);
-	        if (flag) {
-	            creep.moveTo(flag.id);    
-	        }
 	        creep.memory.building = true;
 	        creep.say('building');
 	    }
 
 	    if(creep.memory.building) {
-	        var targets = creep.room.find(FIND_CONSTRUCTION_SITES);
-            if(targets.length) {
-                if(creep.build(targets[0]) == ERR_NOT_IN_RANGE) {
-                    creep.moveTo(targets[0]);
+	        var target = _.first(creep.room.find(FIND_CONSTRUCTION_SITES));
+            if(target) {
+                if(creep.build(target) == ERR_NOT_IN_RANGE) {
+                    creep.moveTo(target);
+                }
+            }
+            else {
+                var flag = creep.pos.findClosestByRange(FIND_FLAGS);
+                if (flag) {
+                    creep.moveTo(flag);    
                 }
             }
 	    }

@@ -11,10 +11,6 @@ var roleRepairer = {
             creep.say('harvesting');
 	    }
 	    if(!creep.memory.repairing && creep.carry.energy == creep.carryCapacity) {
-	        var flag = creep.pos.findClosestByRange(FIND_FLAGS);
-	        if (flag) {
-	            creep.moveTo(flag.id);    
-	        }
 	        creep.memory.repairing = true;
 	        creep.say('repairing');
 	    }
@@ -26,6 +22,12 @@ var roleRepairer = {
                 error = creep.repair(Game.getObjectById(creep.memory.target));
                 if(error == ERR_NOT_IN_RANGE) {
                     creep.moveTo(Game.getObjectById(creep.memory.target));
+                }
+            }
+            else {
+                var flag = creep.pos.findClosestByRange(FIND_FLAGS);
+                if (flag) {
+                    creep.moveTo(flag);    
                 }
             }
 	    }

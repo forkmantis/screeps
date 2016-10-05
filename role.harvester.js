@@ -19,27 +19,25 @@ var roleHarvester = {
         }
 
         if(creep.memory.delivering) {
-            var targetContainer = util.findNearestEmptyContainer(creep);
-            var targetStorage = util.findNearestEmptyStorage(creep);
-            if (targetContainer) {
-                creep.memory.target = targetContainer.id;
-            }
-            else if (targetStorage) {
-                creep.memory.target = targetStorage.id;
-            }
-            else {
-                var targets = creep.room.find(FIND_STRUCTURES, {
+            var target = util.findNearestEmptyContainer(creep);
+            if (!target) target = util.findNearestEmptyStorage(creep);
+            if (!target) target = _.first(creep.room.find(FIND_STRUCTURES, {
                     filter: (structure) => {
                         return (structure.structureType == STRUCTURE_SPAWN) && structure.energy < structure.energyCapacity;
                     }
-                });
-                if(targets.length > 0) {
-                    creep.memory.target = targets[0].id;
+                }));
+            creep.memory.target = (target) ? target.id : undefined;
+            if (creep.memory.target) {
+                var error = creep.transfer(Game.getObjectById(creep.memory.target), RESOURCE_ENERGY);
+                if(error == ERR_NOT_IN_RANGE) {
+                    creep.moveTo(Game.getObjectById(creep.memory.target));
                 }
             }
-            error = creep.transfer(Game.getObjectById(creep.memory.target), RESOURCE_ENERGY);
-            if(error == ERR_NOT_IN_RANGE) {
-                creep.moveTo(Game.getObjectById(creep.memory.target));
+            else {
+                var flag = creep.pos.findClosestByRange(FIND_FLAGS);
+                if (flag) {
+                    creep.moveTo(flag);    
+                }
             }
         }
         else {
