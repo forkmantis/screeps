@@ -99,7 +99,7 @@ module.exports = {
         }
         else {
             creep.room.memory.barrierLevel += 20000;
-            return findNearestRepairBarrier(creep);
+            return this.findNearestRepairBarrier(creep);
         }
     },
     findCreepsPosition(creep) {
