@@ -55,16 +55,16 @@ var roleTransporter = {
     },
     getComponents: function(room) {
         if (room.energyCapacityAvailable >= 1300) {
-            return [WORK,CARRY,CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE,MOVE,MOVE];
+            return [CARRY,MOVE,CARRY,CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE,MOVE,MOVE];
         }
         else if (room.energyCapacityAvailable >= 800) {
-            return [WORK,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE];
+            return [CARRY,MOVE,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE];
         }
         else if (room.energyCapacityAvailable >= 450) {
-            return [WORK,CARRY,CARRY,MOVE];
+            return [CARRY,MOVE,CARRY,CARRY,MOVE];
         }
         else if (room.energyCapacityAvailable >= 300) {
-            return [WORK,CARRY,MOVE];
+            return [CARRY,MOVE,CARRY,MOVE];
         }
     }
 };
