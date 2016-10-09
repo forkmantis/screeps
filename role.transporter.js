@@ -16,13 +16,13 @@ var roleTransporter = {
         }
 
         if(creep.memory.transporting) {
-            var target = _.first(creep.room.find(FIND_STRUCTURES, {
+            var target = creep.pos.findClosestByRange(FIND_STRUCTURES, {
                 filter: (structure) => {
-                    return (structure.structureType == STRUCTURE_SPAWN) 
+                    return (structure.structureType == STRUCTURE_SPAWN
+                        || structure.structureType == STRUCTURE_EXTENSION) 
                         && structure.energy < structure.energyCapacity;
                 }
-            }));
-            if (!target) target = util.findNearestEmptyExtension(creep);
+            });
             if (!target) target = util.findNearestEmptyTower(creep);
             if (!target) target = findInLink(creep);
             creep.memory.target = (target) ? target.id : undefined;
