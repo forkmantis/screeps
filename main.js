@@ -12,7 +12,8 @@ module.exports.loop = function () {
 
     for(var name in Memory.creeps) {
         if(!Game.creeps[name]) {
-            console.log(Memory.creeps[name].role, name, 'has died!');
+            var assignedRoom = Memory.creeps[name].assignedRoom;
+            console.log(Memory.creeps[name].role, name, 'has died in room ' + assignedRoom + '!');
             delete Memory.creeps[name];
         }
     }
@@ -27,36 +28,24 @@ module.exports.loop = function () {
             }
 
             var desiredHarvesters = 2 * room.memory.sourceCount;
+            var desiredTransporters = 2;
+            var desiredBuilders = room.find(FIND_CONSTRUCTION_SITES).length > 0 ? 2 : 0;
+            var desiredUpgraders = 2;
+            var desiredRepairers = 1;
+            var desiredWallBuilders = 1;
+            var desiredMiners = room.find(FIND_STRUCTURES, { filter: function(x) { return x.structureType == STRUCTURE_EXTRACTOR; }}).length;
          
             var harvesters = _.filter(Game.creeps, (creep) => creep.memory.role == 'harvester' && creep.memory.assignedRoom == room.name);
             if (harvesters.length < desiredHarvesters) {
-                var newName = roleHarvester.spawn(spawn, assignSourceToHarvester(room));
-                if (_.isString(newName)) {
-                    console.log('Spawning new harvester ' + newName);
-                }
+                autoSpawn('harvester', roleHarvester.getComponents(room), desiredHarvesters, room);
             }
             else {
-                autoSpawn('upgrader', roleUpgrader.getComponents(room), 2, room);
-                var constructionSiteCount = room.find(FIND_CONSTRUCTION_SITES).length
-                if( constructionSiteCount > 0) {
-                    autoSpawn('builder', roleBuilder.getComponents(room), constructionSiteCount > 0 ? 2 : 0, room);
-                }
-                autoSpawn('repairer', roleRepairer.getComponents(room), 1, room);
-                autoSpawn('wallBuilder', roleWallBuilder.getComponents(room), 1, room);
-                var transporters = _.filter(Game.creeps, (creep) => creep.memory.role == 'transporter' && creep.memory.assignedRoom == room.name);
-                if (transporters.length < 2) {
-                    var newName = roleTransporter.spawn(spawn);
-                    if (_.isString(newName)) {
-                        console.log('Spawning new transporter ' + newName);
-                    }
-                    autoSpawn('transporter', [WORK,CARRY,MOVE], 2, room);
-                }
-                if (_.sum(Game.creeps, (c) => c.memory.role == 'miner') < 1) {
-                    var newName = roleMiner.spawn(spawn);
-                    if (_.isString(newName)) {
-                        console.log('Spawning new miner ' + newName);
-                    }
-                }
+                autoSpawn('transporter', roleTransporter.getComponents(room), desiredTransporters, room);
+                autoSpawn('builder', roleBuilder.getComponents(room), desiredBuilders, room);
+                autoSpawn('upgrader', roleUpgrader.getComponents(room), desiredUpgraders, room);
+                autoSpawn('repairer', roleRepairer.getComponents(room), desiredRepairers, room);
+                autoSpawn('wallBuilder', roleWallBuilder.getComponents(room), desiredWallBuilders, room);
+                autoSpawn('miner', roleMiner.getComponents(room), desiredMiners, room);
             }
         }
         
@@ -115,10 +104,10 @@ module.exports.loop = function () {
 }
 
 function autoSpawn(role, attributes, quantity, room, creepRole) {
-    var spawns = _.filter(Game.creeps, (creep) => creep.memory.role == role && creep.memory.assignedRoom == room.name);
+    var spawnedCreeps = _.filter(Game.creeps, (creep) => creep.memory.role == role && creep.memory.assignedRoom == room.name);
     var spawn = Game.spawns[room.memory.spawnName];
 
-    if (spawns.length < quantity) {
+    if (spawnedCreeps.length < quantity) {
         var newName = spawn.createCreep(attributes, undefined, 
             {
                 'role': role,
@@ -159,33 +148,4 @@ function distributeLinkEnergy(room) {
             fullLink.transferEnergy(emptyLink);
         }
     }
-}
-
-function assignSourceToHarvester(room) {
-    var sourceCounts = {};
-    _.filter(room.find(FIND_SOURCES)).map(function(source) { sourceCounts[source.id] = 2;});
-
-    var harvesterCounts = {};
-
-    _.filter(Game.creeps, (c) => c.memory.role === 'harvester').map(function(c) {var a = c.memory.homeSource; 
-        if (a in harvesterCounts) {
-            harvesterCounts[a]++;
-        }
-        else {
-            harvesterCounts[a] = 1;
-        }
-    });
-    for (var c in sourceCounts) {
-        if (c in harvesterCounts) {
-            sourceCounts[c] = sourceCounts[c] - harvesterCounts[c];
-        }
-    }
-    var harvesterSource;
-    for (var src in sourceCounts) {
-        if (sourceCounts[src] > 0) {
-             harvesterSource = src;
-        }
-    }
-
-    return harvesterSource;
 }

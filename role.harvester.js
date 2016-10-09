@@ -54,9 +54,14 @@ var roleHarvester = {
             }
         }
 	},
-    spawn: function(spawn, targetId) {
-        return spawn.createCreep(this.getComponents(spawn.room), undefined, {'role': 'harvester'
-            , 'homeSource': targetId, 'assignedRoom': spawn.room.name });
+    spawn: function(spawn) {
+        return spawn.createCreep(this.getComponents(spawn.room), undefined, 
+            {
+                'role': 'harvester'
+                , 'homeSource': this.assignSourceToHarvester(spawn.room)
+                , 'assignedRoom': spawn.room.name 
+            }
+        );
     },
     getComponents: function(room) {
         if (room.energyCapacityAvailable >= 1300) {
@@ -71,7 +76,35 @@ var roleHarvester = {
         else if (room.energyCapacityAvailable >= 300) {
             return [WORK,CARRY,MOVE];
         }
-    }
+    },
+	assignSourceToHarvester: function(room) {
+		var sourceCounts = {};
+		_.filter(room.find(FIND_SOURCES)).map(function(source) { sourceCounts[source.id] = 2;});
+
+		var harvesterCounts = {};
+
+		_.filter(Game.creeps, (c) => c.memory.role === 'harvester').map(function(c) {var a = c.memory.homeSource; 
+			if (a in harvesterCounts) {
+				harvesterCounts[a]++;
+			}
+			else {
+				harvesterCounts[a] = 1;
+			}
+		});
+		for (var c in sourceCounts) {
+			if (c in harvesterCounts) {
+				sourceCounts[c] = sourceCounts[c] - harvesterCounts[c];
+			}
+		}
+		var harvesterSource;
+		for (var src in sourceCounts) {
+			if (sourceCounts[src] > 0) {
+				 harvesterSource = src;
+			}
+		}
+
+		return harvesterSource;
+	}
 };
 
 module.exports = roleHarvester;
