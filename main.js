@@ -30,7 +30,8 @@ module.exports.loop = function () {
             var desiredHarvesters = 2 * room.memory.sourceCount;
             var desiredTransporters = 2;
             var desiredBuilders = room.find(FIND_CONSTRUCTION_SITES).length > 0 ? 2 : 0;
-            var desiredUpgraders = (desiredBuilders > 0) ? 1 : 2;
+            var desiredUpgraders = (room.memory.desiredUpgraders) ? room.memory.desiredUpgraders : 2;
+            if (desiredBuilders > 0) desiredUpgraders -= 1;
             var desiredRepairers = 1;
             var desiredWallBuilders = (desiredBuilders > 0) ? 0 : 1;
             var desiredMiners = room.find(FIND_STRUCTURES, { filter: function(x) { return x.structureType == STRUCTURE_EXTRACTOR; }}).length;
