@@ -4,7 +4,6 @@ var roleMiner = {
 
     /** @param {Creep} creep **/
     run: function(creep) {
-        
         if(creep.memory.delivering && _.sum(creep.carry) == 0) {
             creep.memory.delivering = false;
             creep.say('mining');
@@ -30,17 +29,37 @@ var roleMiner = {
                 creep.memory.target = targetStorage.id;
             }
 
-            error = creep.transfer(Game.getObjectById(creep.memory.target), creep.memory.mineralType);
+            var resourceType = (Object.keys(creep.carry).length > 1) ?
+                creep.memory.mineralType :
+                RESOURCE_ENERGY;
+
+            error = creep.transfer(Game.getObjectById(creep.memory.target), resourceType);
             if(error == ERR_NOT_IN_RANGE) {
                 creep.moveTo(Game.getObjectById(creep.memory.target));
             }
         }
         else {
-            creep.memory.target = creep.pos.findClosestByRange(FIND_MINERALS).id;
-            creep.memory.mineralType = Game.getObjectById(creep.memory.target).mineralType;
+            var mineral = creep.pos.findClosestByRange(FIND_MINERALS);
+            if (mineral.mineralAmount > 0) {
+                creep.memory.target = mineral.id;
+                creep.memory.mineralType = Game.getObjectById(creep.memory.target).mineralType;
 
-            if(creep.harvest(Game.getObjectById(creep.memory.target)) == ERR_NOT_IN_RANGE) {
-                creep.moveTo(Game.getObjectById(creep.memory.target));
+                if(creep.harvest(Game.getObjectById(creep.memory.target)) == ERR_NOT_IN_RANGE) {
+                    creep.moveTo(Game.getObjectById(creep.memory.target));
+                }
+            }
+            else {
+                var link = creep.pos.findClosestByRange(FIND_STRUCTURES, {
+                    filter: function(x) {
+                        return x.structureType == STRUCTURE_LINK
+                            && x.energy > 0;
+                    }
+                });
+                if (link) creep.memory.target = link.id;
+                var error = creep.withdraw(Game.getObjectById(creep.memory.target), RESOURCE_ENERGY);
+                if(error == ERR_NOT_IN_RANGE) {
+                    creep.moveTo(Game.getObjectById(creep.memory.target));
+                }
             }
         }
 	},
