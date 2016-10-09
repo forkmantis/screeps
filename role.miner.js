@@ -40,7 +40,10 @@ var roleMiner = {
         }
         else {
             var mineral = creep.pos.findClosestByRange(FIND_MINERALS);
-            if (mineral.mineralAmount > 0) {
+            var extractor = creep.pos.findClosestByRange(FIND_STRUCTURES, { filter: function(x) {
+                return x.structureType == STRUCTURE_EXTRACTOR;
+            }});
+            if (mineral.mineralAmount > 0 && extractor.cooldown == 0) {
                 creep.memory.target = mineral.id;
                 creep.memory.mineralType = Game.getObjectById(creep.memory.target).mineralType;
 
@@ -49,12 +52,11 @@ var roleMiner = {
                 }
             }
             else {
-                var link = creep.pos.findClosestByRange(FIND_STRUCTURES, {
+                var link = _.first(creep.pos.findInRange(FIND_STRUCTURES, 3, {
                     filter: function(x) {
-                        return x.structureType == STRUCTURE_LINK
-                            && x.energy > 0;
+                        return x.structureType == STRUCTURE_LINK;
                     }
-                });
+                }));
                 if (link) creep.memory.target = link.id;
                 var error = creep.withdraw(Game.getObjectById(creep.memory.target), RESOURCE_ENERGY);
                 if(error == ERR_NOT_IN_RANGE) {
