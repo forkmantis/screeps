@@ -37,15 +37,15 @@ module.exports.loop = function () {
          
             var harvesters = _.filter(Game.creeps, (creep) => creep.memory.role == 'harvester' && creep.memory.assignedRoom == room.name);
             if (harvesters.length < desiredHarvesters) {
-                autoSpawn('harvester', roleHarvester.getComponents(room), desiredHarvesters, room);
+                autoSpawn('harvester', roleHarvester.getComponents(room), desiredHarvesters, room, roleHarvester);
             }
             else {
-                autoSpawn('transporter', roleTransporter.getComponents(room), desiredTransporters, room);
-                autoSpawn('builder', roleBuilder.getComponents(room), desiredBuilders, room);
-                autoSpawn('upgrader', roleUpgrader.getComponents(room), desiredUpgraders, room);
-                autoSpawn('repairer', roleRepairer.getComponents(room), desiredRepairers, room);
-                autoSpawn('wallBuilder', roleWallBuilder.getComponents(room), desiredWallBuilders, room);
-                autoSpawn('miner', roleMiner.getComponents(room), desiredMiners, room);
+                autoSpawn('transporter', roleTransporter.getComponents(room), desiredTransporters, room, roleTransporter);
+                autoSpawn('builder', roleBuilder.getComponents(room), desiredBuilders, room, roleBuilder);
+                autoSpawn('upgrader', roleUpgrader.getComponents(room), desiredUpgraders, room, roleUpgrader);
+                autoSpawn('repairer', roleRepairer.getComponents(room), desiredRepairers, room, roleRepairer);
+                autoSpawn('wallBuilder', roleWallBuilder.getComponents(room), desiredWallBuilders, room, roleWallBuilder);
+                autoSpawn('miner', roleMiner.getComponents(room), desiredMiners, room, roleMiner);
             }
         }
         
@@ -108,11 +108,7 @@ function autoSpawn(role, attributes, quantity, room, creepRole) {
     var spawn = Game.spawns[room.memory.spawnName];
 
     if (spawnedCreeps.length < quantity) {
-        var newName = spawn.createCreep(attributes, undefined, 
-            {
-                'role': role,
-                'assignedRoom': room.name
-            });
+        var newName = creepRole.spawn(spawn);
         if (_.isString(newName)) {
             console.log('Spawning new ' + role + ' ' + newName + ' into ' + room.name);
         }

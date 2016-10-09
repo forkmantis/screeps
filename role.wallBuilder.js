@@ -49,7 +49,7 @@ var roleWallBuilder = {
 	    }
 	},
     spawn: function(spawn) {
-        return spawn.createCreep(getComponents(spawn.room), undefined, {'role': 'wallBuilder', 'assignedRoom': spawn.room.name});
+        return spawn.createCreep(this.getComponents(spawn.room), undefined, {'role': 'wallBuilder', 'assignedRoom': spawn.room.name});
     },
     getComponents: function(room) {
         if (room.energyCapacityAvailable >= 1300) {

@@ -49,9 +49,9 @@ var roleTransporter = {
             }
         }
 	},
-    spawn: function(spawn, targetId) {
+    spawn: function(spawn) {
         return spawn.createCreep(this.getComponents(spawn.room), undefined
-            , { 'role': 'transporter', 'homeSource': targetId, 'assignedRoom': spawn.room.name });
+            , { 'role': 'transporter', 'assignedRoom': spawn.room.name });
     },
     getComponents: function(room) {
         if (room.energyCapacityAvailable >= 1300) {

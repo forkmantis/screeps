@@ -49,7 +49,7 @@ var roleBuilder = {
 	    }
 	},
     spawn: function(spawn) {
-        return spawn.createCreep(this.getComonents(spawn.room), undefined, {'role': 'harvester', 'assignedRoom': spawn.room.name});
+        return spawn.createCreep(this.getComponents(spawn.room), undefined, {'role': 'harvester', 'assignedRoom': spawn.room.name});
     },
     getComponents: function(room) {
         if (room.energyCapacityAvailable >= 1800) {

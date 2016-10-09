@@ -35,7 +35,7 @@ var roleScout = {
 
 	},
     spawn: function(spawn) {
-        return spawn.createCreep([WORK,CARRY,MOVE,MOVE,CLAIM], undefined, {'role': 'scout'});
+        return spawn.createCreep([MOVE,MOVE,CLAIM], undefined, {'role': 'scout'});
     }
 };
 

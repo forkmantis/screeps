@@ -42,11 +42,14 @@ var roleUpgrader = {
             }
         }
 	},
-    spawn: function(spawn, targetId) {
+    spawn: function(spawn) {
         return spawn.createCreep(
-            getComponents(spawn.room)
+            this.getComponents(spawn.room)
             , undefined
-            , {'role': 'upgrader', 'homeSource': targetId }
+            , {
+                'role': 'upgrader'
+                , 'assignedRoom': spawn.room.name 
+            }
         );
     },
     getComponents: function(room) {

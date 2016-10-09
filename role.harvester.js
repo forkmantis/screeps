@@ -78,12 +78,13 @@ var roleHarvester = {
         }
     },
 	assignSourceToHarvester: function(room) {
+        console.log('assigning source to Harvester');
 		var sourceCounts = {};
 		_.filter(room.find(FIND_SOURCES)).map(function(source) { sourceCounts[source.id] = 2;});
 
 		var harvesterCounts = {};
 
-		_.filter(Game.creeps, (c) => c.memory.role === 'harvester').map(function(c) {var a = c.memory.homeSource; 
+		_.filter(Game.creeps, (c) => c.memory.role === 'harvester' && c.room.name == room.name).map(function(c) {var a = c.memory.homeSource; 
 			if (a in harvesterCounts) {
 				harvesterCounts[a]++;
 			}
@@ -102,6 +103,7 @@ var roleHarvester = {
 				 harvesterSource = src;
 			}
 		}
+        console.log('harvesterSource = ' + harvesterSource);
 
 		return harvesterSource;
 	}
