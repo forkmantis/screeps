@@ -30,9 +30,9 @@ module.exports.loop = function () {
             var desiredHarvesters = 2 * room.memory.sourceCount;
             var desiredTransporters = 2;
             var desiredBuilders = room.find(FIND_CONSTRUCTION_SITES).length > 0 ? 2 : 0;
-            var desiredUpgraders = 2;
+            var desiredUpgraders = (desiredBuilders > 0) ? 1 : 2;
             var desiredRepairers = 1;
-            var desiredWallBuilders = 1;
+            var desiredWallBuilders = (desiredBuilders > 0) ? 0 : 1;
             var desiredMiners = room.find(FIND_STRUCTURES, { filter: function(x) { return x.structureType == STRUCTURE_EXTRACTOR; }}).length;
          
             var harvesters = _.filter(Game.creeps, (creep) => creep.memory.role == 'harvester' && creep.memory.assignedRoom == room.name);

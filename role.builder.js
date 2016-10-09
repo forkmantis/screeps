@@ -29,7 +29,6 @@ var roleBuilder = {
             }
 	    }
 	    else {
-            
             var storage = util.findNearestFullContainerOrStorage(creep);
             if (storage) {
                 creep.memory.target = storage.id;
@@ -49,7 +48,7 @@ var roleBuilder = {
 	    }
 	},
     spawn: function(spawn) {
-        return spawn.createCreep(this.getComponents(spawn.room), undefined, {'role': 'harvester', 'assignedRoom': spawn.room.name});
+        return spawn.createCreep(this.getComponents(spawn.room), undefined, {'role': 'builder', 'assignedRoom': spawn.room.name});
     },
     getComponents: function(room) {
         if (room.energyCapacityAvailable >= 1800) {
