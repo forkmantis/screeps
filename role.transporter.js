@@ -46,6 +46,12 @@ var roleTransporter = {
                 if(creep.withdraw(Game.getObjectById(creep.memory.target), RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
                     creep.moveTo(Game.getObjectById(creep.memory.target));
                 }
+            }            
+            else {
+                var flag = creep.pos.findClosestByRange(FIND_FLAGS);
+                if (flag) {
+                    creep.moveTo(flag);    
+                }
             }
         }
 	},
