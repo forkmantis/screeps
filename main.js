@@ -28,7 +28,7 @@ module.exports.loop = function () {
             }
 
             var desiredHarvesters = 2 * room.memory.sourceCount;
-            var desiredTransporters = 2;
+            var desiredTransporters = 1;
             var desiredBuilders = room.find(FIND_CONSTRUCTION_SITES).length > 0 ? 2 : 0;
             var desiredUpgraders = (room.memory.desiredUpgraders) ? room.memory.desiredUpgraders : 2;
             if (desiredBuilders > 0) desiredUpgraders -= 1;
