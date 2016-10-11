@@ -101,8 +101,10 @@ module.exports.loop = function () {
 
 
         distributeLinkEnergy(room);
-        if (Game.time % 100 == 0) {
+        if (Game.time % 10 == 0) {
             initRoomMemory(room);
+        }
+        if (Game.time % 2000 == 1) {
             if (room.terminal) sellMinerals(room);
         }
     }
