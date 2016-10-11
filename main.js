@@ -101,6 +101,10 @@ module.exports.loop = function () {
 
 
         distributeLinkEnergy(room);
+        if (Game.time % 100 == 0) {
+            initRoomMemory(room);
+            if (room.terminal) sellMinerals(room);
+        }
     }
 }
 
@@ -144,5 +148,44 @@ function distributeLinkEnergy(room) {
         if (emptyLink) {
             fullLink.transferEnergy(emptyLink);
         }
+    }
+}
+
+function sellMinerals(room) {
+    var orders = _.sortByOrder(Game.market.getAllOrders(
+        (o) => o.type == ORDER_BUY 
+        && o.resourceType == room.memory.resourceType
+        && o.price > 1.0
+    ), ['price']);
+
+    if (orders) {
+        var o = _.last(orders);
+        var costPerUnit = Game.market.calcTransactionCost(1, o.roomName, room.name);
+        var unitsAvailable = room.terminal.store[room.memory.resourceType] - 10000;
+        var mostUnits = _.min([unitsAvailable, o.amount]);
+        var unitsToTrade = ((mostUnits * costPerUnit) <= room.terminal.store[RESOURCE_ENERGY]) ?
+            mostUnits :
+            room.terminal.store[RESOURCE_ENERGY] / costPerUnit;
+
+        if (Game.market.deal(o.id, unitsToTrade, room.name) === 0) {
+            console.log('SOLD['+ o.id + ']: ' + unitsToTrade + ' units of ' + room.memory.resourceType + ' for ' + o.price + ' per unit and an energy cost of ' + costPerUnit);
+        }
+        else {
+            console.log('ERROR SELLING['+ o.id + ']: ' + unitsToTrade + ' units of ' + room.memory.resourceType + ' for ' + o.price + ' per unit and an energy cost of ' + costPerUnit);
+        }
+    }
+}
+
+function initRoomMemory(room) {
+    if (!room.memory.resourceType) {
+        var mineral = room.find(FIND_MINERALS)[0];
+        room.memory.resourceType = mineral.mineralType;
+    }
+    if (!room.memory.hasExtractor) {
+        room.memory.hasExtractor = room.find(FIND_STRUCTURES, { 
+            filter: function(x) {
+                return x.structureType === STRUCTURE_TERMINAL; 
+            }
+        }).length > 0;
     }
 }
