@@ -35,15 +35,15 @@ module.exports.loop = function () {
          
             var harvesters = _.filter(Game.creeps, (creep) => creep.memory.role == 'harvester' && creep.memory.assignedRoom == room.name);
             if (harvesters.length < desiredHarvesters) {
-                autoSpawn('harvester', roleHarvester.getComponents(room), desiredHarvesters, room, roleHarvester);
+                autoSpawn('harvester', desiredHarvesters, room, roleHarvester);
             }
             else {
-                autoSpawn('transporter', roleTransporter.getComponents(room), desiredTransporters, room, roleTransporter);
-                autoSpawn('builder', roleBuilder.getComponents(room), desiredBuilders, room, roleBuilder);
-                autoSpawn('upgrader', roleUpgrader.getComponents(room), desiredUpgraders, room, roleUpgrader);
-                autoSpawn('repairer', roleRepairer.getComponents(room), desiredRepairers, room, roleRepairer);
-                autoSpawn('wallBuilder', roleWallBuilder.getComponents(room), desiredWallBuilders, room, roleWallBuilder);
-                autoSpawn('miner', roleMiner.getComponents(room), desiredMiners, room, roleMiner);
+                autoSpawn('transporter', desiredTransporters, room, roleTransporter);
+                autoSpawn('builder', desiredBuilders, room, roleBuilder);
+                autoSpawn('upgrader', desiredUpgraders, room, roleUpgrader);
+                autoSpawn('repairer', desiredRepairers, room, roleRepairer);
+                autoSpawn('wallBuilder', desiredWallBuilders, room, roleWallBuilder);
+                autoSpawn('miner', desiredMiners, room, roleMiner);
             }
         }
         
@@ -107,7 +107,7 @@ module.exports.loop = function () {
     }
 }
 
-function autoSpawn(role, attributes, quantity, room, creepRole) {
+function autoSpawn(role, quantity, room, creepRole) {
     var spawnedCreeps = _.filter(Game.creeps, (creep) => creep.memory.role == role && creep.memory.assignedRoom == room.name);
     var spawn = Game.spawns[room.memory.spawnName];
 
