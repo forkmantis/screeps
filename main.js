@@ -53,25 +53,25 @@ module.exports.loop = function () {
                 roleHarvester.run(creep, room);
             }
             if(creep.memory.role == 'upgrader') {
-                roleUpgrader.run(creep);
+                roleUpgrader.run(creep, room);
             }
             if(creep.memory.role == 'builder') {
-                roleBuilder.run(creep);
+                roleBuilder.run(creep, room);
             }
             if(creep.memory.role == 'repairer') {
-                roleRepairer.run(creep);
+                roleRepairer.run(creep, room);
             }
             if(creep.memory.role == 'wallBuilder') {
-                roleWallBuilder.run(creep);
+                roleWallBuilder.run(creep, room);
             }
             if(creep.memory.role == 'transporter') {
-                roleTransporter.run(creep);
+                roleTransporter.run(creep, room);
             }
             if(creep.memory.role == 'miner') {
-                roleMiner.run(creep);
+                roleMiner.run(creep, room);
             }
             if(creep.memory.role == 'scout') {
-                roleScout.run(creep);
+                roleScout.run(creep, room);
             }
         }
 
