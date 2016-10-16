@@ -23,11 +23,8 @@ module.exports.loop = function () {
         var spawn = room.find(FIND_STRUCTURES, { filter: function(x) { return x.structureType == STRUCTURE_SPAWN; }})[0];
         if (spawn) {
             room.memory.spawnName = spawn.name;
-            if (room.memory.sourceCount == undefined) {
-                room.memory.sourceCount = room.find(FIND_SOURCES).length;
-            }
-
-            var desiredHarvesters = 2 * room.memory.sourceCount;
+            var sourceCount = (room.memory.sources) ? Object.keys(room.memory.sources).length : 1;
+            var desiredHarvesters = 2 * sourceCount;
             var desiredTransporters = 1;
             var desiredBuilders = room.find(FIND_CONSTRUCTION_SITES).length > 0 ? 2 : 0;
             var desiredUpgraders = (room.memory.desiredUpgraders) ? room.memory.desiredUpgraders : 2;
@@ -189,5 +186,32 @@ function initRoomMemory(room) {
                 return x.structureType === STRUCTURE_TERMINAL; 
             }
         }).length > 0;
+    }
+    if (!room.memory.sources) {
+        room.memory.sources = {};
+        var sources = room.find(FIND_SOURCES);
+        for (i = 0; i < sources.length; i++) {
+            var source = sources[i];
+            room.memory.sources[source.id] = {};
+        }
+    }
+    var sources = Object.keys(room.memory.sources)
+    for (i = 0; i < sources.length; i++) {
+        var key = sources[i];
+        var source = Game.getObjectById(key);
+        var spawn = source.pos.findClosestByPath(FIND_STRUCTURES, {
+            filter: function(x) { return x.structureType == STRUCTURE_SPAWN; }
+        });
+        if (spawn) room.memory.sources[source.id].nearestSpawn = spawn.name;
+    }
+    if (!room.memory.stats) {
+        room.memory.stats = {};
+        room.memory.stats.builder = [];
+        room.memory.stats.harvester = [];
+        room.memory.stats.miner = [];
+        room.memory.stats.repairer = [];
+        room.memory.stats.transporter = [];
+        room.memory.stats.upgrader = [];
+        room.memory.stats.wallBuilder = [];
     }
 }
