@@ -3,7 +3,20 @@ var util = require('util');
 var roleHarvester = {
 
     /** @param {Creep} creep **/
-    run: function(creep) {
+    run: function(creep, room) {
+
+        if (creep.ticksToLive == 1499) {
+            console.log('harvester ' + creep.name + ' was born on ' + creep.memory.stats.spawnedOn +
+                ' and spawn finished at ' + Game.time + ' for a spawn time of ' + Game.time - creep.memory.stats.spawnedOn);
+            creep.memory.stats.ticksToSpawn = Game.time - creep.memory.stats.spawnedOn;
+            delete creep.memory.stats.spawnedOn;
+        }
+        if(creep.ticksToLive == 1 && creep.room.name === room.name) {
+            creep.memory.stats.name = creep.name;
+            var stats = creep.room.memory.stats.harvester;
+            stats.push(creep.memory.stats);
+            if (stats.length > 5 * Object.keys(creep.room.memory.sources).length) stats.shift();
+        }
         
         if(creep.memory.delivering && creep.carry.energy == 0) {
             creep.memory.delivering = false;
@@ -32,6 +45,12 @@ var roleHarvester = {
                 if(error == ERR_NOT_IN_RANGE) {
                     creep.moveTo(Game.getObjectById(creep.memory.target));
                 }
+                else {
+                    if (!creep.memory.stats) creep.memory.stats = {};
+                    creep.memory.stats.output = (creep.memory.stats.output) ? 
+                        creep.memory.stats.output += creep.carryCapacity :
+                        creep.carryCapacity;
+                }
             }
             else {
                 var flag = creep.pos.findClosestByRange(FIND_FLAGS);
@@ -51,15 +70,25 @@ var roleHarvester = {
                 if(creep.harvest(Game.getObjectById(creep.memory.target)) == ERR_NOT_IN_RANGE) {
                     creep.moveTo(Game.getObjectById(creep.memory.target));
                 }
+                else {
+                    if (!creep.memory.stats) creep.memory.stats = {};
+                    if (!creep.memory.stats.ticksToFirstAction) {
+                        creep.memory.stats.ticksToFirstAction = 1500 - creep.ticksToLive;
+                    }
+                }
             }
         }
 	},
     spawn: function(spawn) {
+        var source = this.assignSourceToHarvester(spawn.room);
         return spawn.createCreep(this.getComponents(spawn.room), undefined, 
             {
                 'role': 'harvester'
-                , 'homeSource': this.assignSourceToHarvester(spawn.room)
+                , 'homeSource': source
                 , 'assignedRoom': spawn.room.name 
+                , 'stats': { output: 0, 'source': source }
+                , 'spawnedOn': Game.time
+                , 'ticksToSpawnFromSpawn': spawn.spawning.needTime
             }
         );
     },
