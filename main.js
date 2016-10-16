@@ -105,7 +105,7 @@ module.exports.loop = function () {
             initRoomMemory(room);
         }
         if (Game.time % 2000 == 1) {
-            if (room.terminal) sellMinerals(room);
+            //if (room.terminal) sellMinerals(room);
         }
     }
 }
