@@ -5,12 +5,6 @@ var roleHarvester = {
     /** @param {Creep} creep **/
     run: function(creep, room) {
 
-        if (creep.ticksToLive == 1499) {
-            console.log('harvester ' + creep.name + ' was born on ' + creep.memory.stats.spawnedOn +
-                ' and spawn finished at ' + Game.time + ' for a spawn time of ' + Game.time - creep.memory.stats.spawnedOn);
-            creep.memory.stats.ticksToSpawn = Game.time - creep.memory.stats.spawnedOn;
-            delete creep.memory.stats.spawnedOn;
-        }
         if(creep.ticksToLive == 1 && creep.room.name === room.name) {
             creep.memory.stats.name = creep.name;
             var stats = creep.room.memory.stats.harvester;
@@ -81,14 +75,17 @@ var roleHarvester = {
 	},
     spawn: function(spawn) {
         var source = this.assignSourceToHarvester(spawn.room);
-        return spawn.createCreep(this.getComponents(spawn.room), undefined, 
+        var components = this.getComponents(spawn.room);
+        return spawn.createCreep(components, undefined, 
             {
                 'role': 'harvester'
                 , 'homeSource': source
                 , 'assignedRoom': spawn.room.name 
-                , 'stats': { output: 0, 'source': source }
-                , 'spawnedOn': Game.time
-                , 'ticksToSpawnFromSpawn': spawn.spawning.needTime
+                , 'stats': { 
+                    'output': 0
+                    , 'source': source
+                    , 'ticksToSpawn': components.length * 3
+                }
             }
         );
     },
