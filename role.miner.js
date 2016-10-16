@@ -19,7 +19,9 @@ var roleMiner = {
 
         if(creep.memory.delivering) {
             var targetTerminal = _.first(creep.room.find(FIND_STRUCTURES, { filter: function(x) {
-                return x.structureType == STRUCTURE_TERMINAL;
+                return x.structureType == STRUCTURE_TERMINAL &&
+                _.sum(x.store) < x.storeCapacity &&
+                x.store[RESOURCE_ENERGY] < 50000;
             }}));
             var targetStorage = util.findNearestEmptyStorage(creep);
             if (targetTerminal) {
