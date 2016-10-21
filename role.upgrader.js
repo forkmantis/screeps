@@ -3,7 +3,14 @@ var util = require('util');
 var roleUpgrader = {
 
     /** @param {Creep} creep **/
-    run: function(creep) {
+    run: function(creep, room) {
+
+        if (creep.ticksToLive == 1 && creep.room.name == room.name) {
+            creep.memory.stats.name = creep.name;
+            var stats = creep.room.memory.stats.upgrader;
+            stats.push(creep.memory.stats);
+            if (stats.length > 5) stats.shift();
+        }
 
         if(creep.memory.upgrading && creep.carry.energy == 0) {
             creep.memory.upgrading = false;
@@ -16,11 +23,23 @@ var roleUpgrader = {
 	        }
 	        creep.memory.upgrading = true;
 	        creep.say('upgrading');
+            if (!creep.memory.stats.ticksToFirstAction) creep.memory.stats.ticksToFirstAction = 1500 - creep.ticksToLive;
+            if (!creep.memory.stats.roundTrips) creep.memory.stats.roundTrips = 0;
+            creep.memory.stats.roundTrips += 1;
 	    }
 
 	    if(creep.memory.upgrading) {
             if(creep.upgradeController(creep.room.controller) == ERR_NOT_IN_RANGE) {
                 creep.moveTo(creep.room.controller);
+            }
+            else {
+                if (!(creep.memory.stats)) {
+                    creep.memory.stats = {};
+                }
+                if (!(creep.memory.stats.output)) {
+                    creep.memory.stats.output = 0;
+                }
+                creep.memory.stats.output += _.sum(creep.body, function(x) { return x.type == WORK; })
             }
         }
         else {
@@ -43,12 +62,19 @@ var roleUpgrader = {
         }
 	},
     spawn: function(spawn) {
+        var components = this.getComponents(spawn.room);
         return spawn.createCreep(
-            this.getComponents(spawn.room)
+            components
             , undefined
             , {
                 'role': 'upgrader'
                 , 'assignedRoom': spawn.room.name 
+                , 'stats': {
+                    'output': 0
+                    , 'roundTrips': 0
+                    , 'timeToSpawn': components.length * 3
+                    , 'ticksToFirstAction': undefined
+                }
             }
         );
     },

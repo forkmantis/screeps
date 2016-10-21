@@ -2,7 +2,13 @@ var util = require('util');
 
 var roleWallBuilder = {
 
-    run: function(creep) {
+    run: function(creep, room) {
+        if (creep.ticksToLive == 1 && creep.room.name == room.name) {
+            creep.memory.stats.name = creep.name;
+            var stats = creep.room.memory.stats.wallBuilder;
+            stats.push(creep.memory.stats);
+            if (stats.length > 5) stats.shift();
+        }
 
 	    if(creep.memory.repairing && creep.carry.energy == 0) {
             creep.memory.repairing = false;
@@ -20,6 +26,11 @@ var roleWallBuilder = {
                 error = creep.repair(Game.getObjectById(creep.memory.target));
                 if(error == ERR_NOT_IN_RANGE) {
                     creep.moveTo(Game.getObjectById(creep.memory.target));
+                }
+                else {
+                    if (!creep.memory.stats) creep.memory.stats = {};
+                    if (!creep.memory.stats.output) creep.memory.stats.output = 0;
+                    creep.memory.stats.output += _.sum(creep.body, function(x) { return x.type == WORK; })
                 }
             }
             else {
@@ -49,7 +60,17 @@ var roleWallBuilder = {
 	    }
 	},
     spawn: function(spawn) {
-        return spawn.createCreep(this.getComponents(spawn.room), undefined, {'role': 'wallBuilder', 'assignedRoom': spawn.room.name});
+        var components = this.getComponents(spawn.room);
+        return spawn.createCreep(components, undefined, {
+            'role': 'wallBuilder'
+            , 'assignedRoom': spawn.room.name
+            , 'stats': {
+                'output': 0
+                , 'roundTrips': 0
+                , 'timeToSpawn': components.length * 3
+                , 'ticksToFirstAction': undefined
+            }
+        });
     },
     getComponents: function(room) {
         if (room.energyCapacityAvailable >= 1300) {

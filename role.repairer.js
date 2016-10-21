@@ -2,7 +2,13 @@ var util = require('util');
 
 var roleRepairer = {
 
-    run: function(creep) {
+    run: function(creep, room) {
+        if (creep.ticksToLive == 1 && creep.room.name == room.name) {
+            creep.memory.stats.name = creep.name;
+            var stats = creep.room.memory.stats.repairer;
+            stats.push(creep.memory.stats);
+            if (stats.length > 5) stats.shift();
+        }
 
         var error = 0;
 
@@ -22,6 +28,11 @@ var roleRepairer = {
                 error = creep.repair(Game.getObjectById(creep.memory.target));
                 if(error == ERR_NOT_IN_RANGE) {
                     creep.moveTo(Game.getObjectById(creep.memory.target));
+                }
+                else {
+                    if (!creep.memory.stats) creep.memory.stats = {};
+                    if (!creep.memory.stats.output) creep.memory.stats.output = 0;
+                    creep.memory.stats.output += _.sum(creep.body, function(x) { return x.type == WORK; })
                 }
             }
             else {
@@ -51,7 +62,17 @@ var roleRepairer = {
 	    }
 	},
     spawn: function(spawn) {
-        return spawn.createCreep(this.getComponents(spawn.room), undefined ,{'role': 'repairer', 'assignedRoom': spawn.room.name});
+        var components = this.getComponents(spawn.room);
+        return spawn.createCreep(components, undefined ,{
+            'role': 'repairer'
+            , 'assignedRoom': spawn.room.name
+            , 'stats': {
+                'output': 0
+                , 'roundTrips': 0
+                , 'timeToSpawn': components.length * 3
+                , 'ticksToFirstAction': undefined
+            }
+        });
     },
     getComponents: function(room) {
         if (room.energyCapacityAvailable >= 1800) {

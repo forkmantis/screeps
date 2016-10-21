@@ -3,7 +3,13 @@ var util = require('util');
 var roleBuilder = {
 
     /** @param {Creep} creep **/
-    run: function(creep) {
+    run: function(creep, room) {
+        if (creep.ticksToLive == 1 && creep.room.name == room.name) {
+            creep.memory.stats.name = creep.name;
+            var stats = creep.room.memory.stats.builder;
+            stats.push(creep.memory.stats);
+            if (stats.length > 5) stats.shift();
+        }
 
 	    if(creep.memory.building && creep.carry.energy == 0) {
             creep.memory.building = false;
@@ -19,6 +25,13 @@ var roleBuilder = {
             if(target) {
                 if(creep.build(target) == ERR_NOT_IN_RANGE) {
                     creep.moveTo(target);
+                }
+                else {
+                    if (!creep.memory.stats) creep.memory.stats = {};
+                    var workUnits = _.sum(creep.body, function(x) { return x.type == WORK; });
+                    creep.memory.stats.output = (creep.memory.stats.output) ? 
+                        creep.memory.stats.output +=  workUnits :
+                        workUnits;
                 }
             }
             else {

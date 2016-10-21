@@ -4,7 +4,14 @@ var util = require('util');
 var roleTransporter = {
 
     /** @param {Creep} creep **/
-    run: function(creep) {
+    run: function(creep, room) {
+
+        if(creep.ticksToLive == 1 && creep.room.name === room.name) {
+            creep.memory.stats.name = creep.name;
+            var stats = creep.room.memory.stats.transporter;
+            stats.push(creep.memory.stats);
+            if (stats.length > 5) stats.shift();
+        }
         
         if(creep.memory.transporting && creep.carry.energy == 0) {
             creep.memory.transporting = false;
@@ -31,6 +38,9 @@ var roleTransporter = {
                 if(error == ERR_NOT_IN_RANGE) {
                     creep.moveTo(Game.getObjectById(creep.memory.target));
                 }
+                else {
+                    creep.memory.stats.output += creep.carryCapacity;
+                }
             }
             else {
                 var flag = creep.pos.findClosestByRange(FIND_FLAGS);
@@ -54,10 +64,19 @@ var roleTransporter = {
                 }
             }
         }
-	},
+    },
     spawn: function(spawn) {
-        return spawn.createCreep(this.getComponents(spawn.room), undefined
-            , { 'role': 'transporter', 'assignedRoom': spawn.room.name });
+        var components = this.getComponents(spawn.room);
+        return spawn.createCreep(components, undefined,
+            { 
+                'role': 'transporter'
+                , 'assignedRoom': spawn.room.name 
+                , 'stats': {
+                    'output': 0
+                    , 'ticksToSpawn': components.length * 3
+                }
+            }
+        );
     },
     getComponents: function(room) {
         if (room.energyCapacityAvailable >= 1300) {

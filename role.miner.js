@@ -3,7 +3,14 @@ var util = require('util');
 var roleMiner = {
 
     /** @param {Creep} creep **/
-    run: function(creep) {
+    run: function(creep, room) {
+        if (creep.ticksToLive == 1 && creep.room.name == room.name) {
+            creep.memory.stats.name = creep.name;
+            var stats = creep.room.memory.stats.miner;
+            stats.push(creep.memory.stats);
+            if (stats.length > 5) stats.shift();
+        }
+
         if(creep.memory.delivering && _.sum(creep.carry) == 0) {
             creep.memory.delivering = false;
             creep.say('mining');
@@ -52,6 +59,11 @@ var roleMiner = {
                 if(creep.harvest(Game.getObjectById(creep.memory.target)) == ERR_NOT_IN_RANGE) {
                     creep.moveTo(Game.getObjectById(creep.memory.target));
                 }
+                else {
+                    if (!creep.memory.stats) creep.memory.stats = {};
+                    if (!creep.memory.stats.output) creep.memory.stats.output = 0;
+                    creep.memory.stats.output += _.sum(creep.body, function(x) { return x.type == WORK; })
+                }
             }
             else {
                 var link = _.first(creep.pos.findInRange(FIND_STRUCTURES, 3, {
@@ -68,7 +80,17 @@ var roleMiner = {
         }
 	},
     spawn: function(spawn) {
-        return spawn.createCreep(this.getComponents(spawn.room), undefined, {'role': 'miner', 'assignedRoom': spawn.room.name});
+        var components = this.getComponents(spawn.room);
+        return spawn.createCreep(components, undefined, {
+            'role': 'miner'
+            , 'assignedRoom': spawn.room.name
+            , 'stats': {
+                'output': 0
+                , 'roundTrips': 0
+                , 'timeToSpawn': components.length * 3
+                , 'ticksToFirstAction': undefined
+            }
+        });
     },
     getComponents: function(room) {
         if (room.energyCapacityAvailable >= 1800) {

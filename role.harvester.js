@@ -44,6 +44,8 @@ var roleHarvester = {
                     creep.memory.stats.output = (creep.memory.stats.output) ? 
                         creep.memory.stats.output += creep.carryCapacity :
                         creep.carryCapacity;
+                    creep.memory.stats.roundTrips = (creep.memory.stats.roundTrips) ?
+                        creep.memory.stats.roundTrips += 1 : 1;
                 }
             }
             else {
