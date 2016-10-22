@@ -65,8 +65,9 @@ var roleTransporter = {
             }
         }
     },
-    spawn: function(spawn) {
-        var components = this.getComponents(spawn.room);
+    spawn: function(spawn, energyAvailable) {
+        if (!energyAvailable) energyAvailable = spawn.room.energyCapacityAvailable;
+        var components = this.getComponents(energyAvailable);
         return spawn.createCreep(components, undefined,
             { 
                 'role': 'transporter'
@@ -78,17 +79,17 @@ var roleTransporter = {
             }
         );
     },
-    getComponents: function(room) {
-        if (room.energyCapacityAvailable >= 1300) {
+    getComponents: function(energyAvailable) {
+        if (energyAvailable >= 1300) {
             return [CARRY,MOVE,CARRY,CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE,MOVE,MOVE];
         }
-        else if (room.energyCapacityAvailable >= 800) {
+        else if (energyAvailable >= 800) {
             return [CARRY,MOVE,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE];
         }
-        else if (room.energyCapacityAvailable >= 450) {
+        else if (energyAvailable >= 450) {
             return [CARRY,MOVE,CARRY,CARRY,MOVE];
         }
-        else if (room.energyCapacityAvailable >= 300) {
+        else if (energyAvailable >= 300) {
             return [CARRY,MOVE,CARRY,MOVE];
         }
     }

@@ -75,9 +75,10 @@ var roleHarvester = {
             }
         }
 	},
-    spawn: function(spawn) {
+    spawn: function(spawn, energyAvailable) {
         var source = this.assignSourceToHarvester(spawn.room);
-        var components = this.getComponents(spawn.room);
+        if (!energyAvailable) energyAvailable = spawn.room.energyCapacityAvailable;
+        var components = this.getComponents(energyAvailable);
         return spawn.createCreep(components, undefined, 
             {
                 'role': 'harvester'
@@ -91,17 +92,17 @@ var roleHarvester = {
             }
         );
     },
-    getComponents: function(room) {
-        if (room.energyCapacityAvailable >= 1300) {
+    getComponents: function(energyAvailable) {
+        if (energyAvailable >= 1300) {
             return [WORK,WORK,WORK,CARRY,CARRY,MOVE,MOVE];
         }
-        else if (room.energyCapacityAvailable >= 800) {
+        else if (energyAvailable >= 800) {
             return [WORK,WORK,CARRY,CARRY,MOVE,MOVE];
         }
-        else if (room.energyCapacityAvailable >= 450) {
+        else if (energyAvailable >= 450) {
             return [WORK,WORK,CARRY,MOVE];
         }
-        else if (room.energyCapacityAvailable >= 300) {
+        else if (energyAvailable >= 300) {
             return [WORK,CARRY,MOVE];
         }
     },

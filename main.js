@@ -37,17 +37,17 @@ module.exports.loop = function () {
             var desiredWallBuilders = (desiredBuilders > 0) ? 0 : 1;
             var desiredMiners = room.find(FIND_STRUCTURES, { filter: function(x) { return x.structureType == STRUCTURE_EXTRACTOR; }}).length;
          
-            var harvesters = _.filter(Game.creeps, (creep) => creep.memory.role == 'harvester' && creep.memory.assignedRoom == room.name);
-            if (harvesters.length < desiredHarvesters) {
-                autoSpawn('harvester', desiredHarvesters, room, roleHarvester);
+            var harvesters = _.filter(Game.creeps, (creep) => (creep.memory.role == 'harvester' || creep.memory.role == 'transporter') && creep.memory.assignedRoom == room.name);
+            if (harvesters.length < desiredHarvesters + desiredTransporters) {
+                autoSpawn('harvester', desiredHarvesters, roomController, roleHarvester);
+                autoSpawn('transporter', desiredTransporters, roomController, roleTransporter);
             }
-            else {
-                autoSpawn('transporter', desiredTransporters, room, roleTransporter);
-                autoSpawn('builder', desiredBuilders, room, roleBuilder);
-                autoSpawn('upgrader', desiredUpgraders, room, roleUpgrader);
-                autoSpawn('repairer', desiredRepairers, room, roleRepairer);
-                autoSpawn('wallBuilder', desiredWallBuilders, room, roleWallBuilder);
-                autoSpawn('miner', desiredMiners, room, roleMiner);
+            else if (roomController.state == 'healthy') {
+                autoSpawn('builder', desiredBuilders, roomController, roleBuilder);
+                autoSpawn('upgrader', desiredUpgraders, roomController, roleUpgrader);
+                autoSpawn('repairer', desiredRepairers, roomController, roleRepairer);
+                autoSpawn('wallBuilder', desiredWallBuilders, roomController, roleWallBuilder);
+                autoSpawn('miner', desiredMiners, roomController, roleMiner);
             }
         }
         
@@ -111,12 +111,15 @@ module.exports.loop = function () {
     }
 }
 
-function autoSpawn(role, quantity, room, creepRole) {
+function autoSpawn(role, quantity, roomController, creepRole) {
+    var room = roomController.room;
     var spawnedCreeps = _.filter(Game.creeps, (creep) => creep.memory.role == role && creep.memory.assignedRoom == room.name);
     var spawn = Game.spawns[room.memory.spawnName];
 
+    var spawnEnergy = (roomController.state === 'unhealthy') ? room.energyAvailable : room.energyCapacityAvailable;
+
     if (spawnedCreeps.length < quantity) {
-        var newName = creepRole.spawn(spawn);
+        var newName = creepRole.spawn(spawn, spawnEnergy);
         if (_.isString(newName)) {
             console.log('Spawning new ' + role + ' ' + newName + ' into ' + room.name);
         }
