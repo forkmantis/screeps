@@ -6,6 +6,7 @@ var roleWallBuilder = require('role.wallBuilder');
 var roleTransporter = require('role.transporter');
 var roleMiner = require('role.miner');
 var roleScout = require('role.scout');
+var Room = require('room');
 var _ = require('lodash');
 
 module.exports.loop = function () {
@@ -20,6 +21,9 @@ module.exports.loop = function () {
 
     for(var roomName in Game.rooms) {
         var room = Game.rooms[roomName];
+        var roomController = new Room(room);
+        roomController.init();
+        
         var spawn = room.find(FIND_STRUCTURES, { filter: function(x) { return x.structureType == STRUCTURE_SPAWN; }})[0];
         if (spawn) {
             room.memory.spawnName = spawn.name;
