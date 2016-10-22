@@ -93,14 +93,26 @@ var roleHarvester = {
         );
     },
     getComponents: function(energyAvailable) {
-        if (energyAvailable >= 1300) {
-            return [WORK,WORK,WORK,CARRY,CARRY,MOVE,MOVE];
+        if (energyAvailable >= 950) {
+            return [WORK,WORK,WORK,WORK,WORK,WORK,CARRY,CARRY,MOVE,MOVE,MOVE,MOVE,MOVE];
         }
-        else if (energyAvailable >= 800) {
-            return [WORK,WORK,CARRY,CARRY,MOVE,MOVE];
+        else if (energyAvailable >= 850) {
+            return [WORK,WORK,WORK,WORK,WORK,WORK,CARRY,CARRY,MOVE,MOVE,MOVE];
+        }
+        else if (energyAvailable >= 750) {
+            return [WORK,WORK,WORK,WORK,WORK,WORK,CARRY,MOVE,MOVE];
+        }
+        else if (energyAvailable >= 650) {
+            return [WORK,WORK,WORK,WORK,WORK,CARRY,MOVE,MOVE];
+        }
+        else if (energyAvailable >= 550) {
+            return [WORK,WORK,WORK,WORK,CARRY,MOVE,MOVE];
         }
         else if (energyAvailable >= 450) {
-            return [WORK,WORK,CARRY,MOVE];
+            return [WORK,WORK,WORK,CARRY,MOVE,MOVE];
+        }
+        else if (energyAvailable >= 350) {
+            return [WORK,WORK,CARRY,MOVE,MOVE];
         }
         else if (energyAvailable >= 300) {
             return [WORK,WORK,CARRY,MOVE];

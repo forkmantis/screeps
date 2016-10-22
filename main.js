@@ -28,7 +28,7 @@ module.exports.loop = function () {
         if (spawn) {
             room.memory.spawnName = spawn.name;
             var sourceCount = (room.memory.sources) ? Object.keys(room.memory.sources).length : 1;
-            var desiredHarvesters = 2 * sourceCount;
+            var desiredHarvesters = sourceCount;
             var desiredTransporters = 1;
             var desiredBuilders = room.find(FIND_CONSTRUCTION_SITES).length > 0 ? 2 : 0;
             var desiredUpgraders = (room.memory.desiredUpgraders) ? room.memory.desiredUpgraders : 2;
