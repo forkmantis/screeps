@@ -123,7 +123,7 @@ var roleHarvester = {
     },
 	assignSourceToHarvester: function(room) {
 		var sourceCounts = {};
-		_.filter(room.find(FIND_SOURCES)).map(function(source) { sourceCounts[source.id] = 2;});
+		_.filter(room.find(FIND_SOURCES)).map(function(source) { sourceCounts[source.id] = 1;});
 
 		var harvesterCounts = {};
 
