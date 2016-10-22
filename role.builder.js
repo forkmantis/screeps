@@ -60,24 +60,39 @@ var roleBuilder = {
             }
 	    }
 	},
-    spawn: function(spawn) {
-        return spawn.createCreep(this.getComponents(spawn.room), undefined, {'role': 'builder', 'assignedRoom': spawn.room.name});
+    spawn: function(spawn, energyLevel) {
+        var components = this.getComponents(energyLevel);
+        return spawn.createCreep(components, undefined, 
+        {
+            'role': 'builder'
+            , 'assignedRoom': spawn.room.name
+            , 'stats': { 
+                'output': 0
+                , 'ticksToSpawn': components.length * 3
+            }
+        });
     },
-    getComponents: function(room) {
-        if (room.energyCapacityAvailable >= 1800) {
-            return [WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,CARRY,CARRY,MOVE,MOVE,MOVE,MOVE];
+    getComponents: function(energyAvailable) {
+        if (energyAvailable >= 1200) {
+            return [WORK,WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE,MOEV,MOVE,MOVE,MOVE,MOVE,MOVE];
         }
-        else if (room.energyCapacityAvailable >= 1300) {
-            return [WORK,WORK,WORK,CARRY,CARRY,CARRY,MOVE,CARRY,MOVE,MOVE,MOVE];
+        else if (energyAvailable >= 950) {
+            return [WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY,CARRY,MOVE,MOEV,MOVE,MOVE,MOVE,MOVE,MOVE];
         }
-        else if (room.energyCapacityAvailable >= 800) {
-            return [WORK,WORK,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE];
+        else if (energyAvailable >= 700) {
+            return [WORK,WORK,WORK,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE,MOVE,MOVE];
         }
-        else if (room.energyCapacityAvailable >= 450) {
-            return [WORK,CARRY,CARRY,MOVE,MOVE];
+        else if (energyAvailable >= 600) {
+            return [WORK,WORK,WORK,CARRY,CARRY,MOVE,MOVE,MOVE,MOVE];
         }
-        else if (room.energyCapacityAvailable >= 300) {
-            return [WORK,CARRY,MOVE];
+        else if (energyAvailable >= 500) {
+            return [WORK,WORK,CARRY,CARRY,MOVE,MOVE,MOVE,MOVE];
+        }
+        else if (energyAvailable >= 400) {
+            return [WORK,WORK,CARRY,MOVE,MOVE,MOVE];
+        }
+        else if (energyAvailable >= 300) {
+            return [WORK,WORK,CARRY,MOVE];
         }
     }
 };
