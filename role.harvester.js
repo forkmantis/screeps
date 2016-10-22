@@ -111,8 +111,8 @@ var roleHarvester = {
         else if (energyAvailable >= 450) {
             return [WORK,WORK,WORK,CARRY,MOVE,MOVE];
         }
-        else if (energyAvailable >= 350) {
-            return [WORK,WORK,CARRY,MOVE,MOVE];
+        else if (energyAvailable >= 400) {
+            return [WORK,WORK,WORK,CARRY,MOVE];
         }
         else if (energyAvailable >= 300) {
             return [WORK,WORK,CARRY,MOVE];
