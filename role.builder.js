@@ -50,9 +50,10 @@ var roleBuilder = {
                 }
             }
             else {
-                var source = creep.pos.findClosestByRange(FIND_SOURCES);
+                var source = creep.memory.homeSource;
+                if (!source) source = creep.pos.findClosestByRange(FIND_SOURCES).id;
                 if (source) {
-                    creep.memory.target = source.id;
+                    creep.memory.target = source;
                 }
                 if(creep.harvest(Game.getObjectById(creep.memory.target)) == ERR_NOT_IN_RANGE) {
                     creep.moveTo(Game.getObjectById(creep.memory.target));
