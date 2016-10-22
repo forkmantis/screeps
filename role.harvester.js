@@ -103,6 +103,9 @@ var roleHarvester = {
             return [WORK,WORK,CARRY,MOVE];
         }
         else if (energyAvailable >= 300) {
+            return [WORK,WORK,CARRY,MOVE];
+        }
+        else if (energyAvailable >= 200) {
             return [WORK,CARRY,MOVE];
         }
     },
