@@ -5,6 +5,7 @@ var roleUpgrader = {
     /** @param {Creep} creep **/
     run: function(creep, room) {
         if (creep.moveToAssignedRoom()) return;
+        if (!creep.memory.upgrading && _.sum(creep.carry) < creep.carryCapacity && creep.pickupDroppedEnergy()) return;
 
         if (creep.ticksToLive == 1 && creep.room.name == room.name) {
             creep.memory.stats.name = creep.name;
