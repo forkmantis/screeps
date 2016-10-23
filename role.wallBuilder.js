@@ -77,16 +77,19 @@ var roleWallBuilder = {
         });
     },
     getComponents: function(room) {
-        if (room.energyCapacityAvailable >= 1300) {
-            return [WORK,WORK,CARRY,CARRY,MOVE,MOVE,MOVE];
+        if (room.energyCapacityAvailable >= 700) {
+            return [WORK,WORK,WORK,CARRY,CARRY,MOVE,MOVE,MOVE,MOVE,MOVE];
         }
-        else if (room.energyCapacityAvailable >= 800) {
-            return [WORK,WORK,CARRY,CARRY,MOVE,MOVE];
+        else if (room.energyCapacityAvailable >= 550) {
+            return [WORK,WORK,CARRY,CARRY,MOVE,MOVE,MOVE,MOVE];
         }
-        else if (room.energyCapacityAvailable >= 450) {
-            return [WORK,WORK,CARRY,MOVE];
+        else if (room.energyCapacityAvailable >= 400) {
+            return [WORK,WORK,CARRY,MOVE,MOVE,MOVE];
         }
         else if (room.energyCapacityAvailable >= 300) {
+            return [WORK,CARRY,MOVE,MOVE];
+        }
+        else if (room.energyCapacityAvailable >= 200) {
             return [WORK,CARRY,MOVE];
         }
     }
