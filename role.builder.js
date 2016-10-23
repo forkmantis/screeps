@@ -4,6 +4,8 @@ var roleBuilder = {
 
     /** @param {Creep} creep **/
     run: function(creep, room) {
+        if (creep.moveToAssignedRoom()) return; 
+
         if (creep.ticksToLive == 1 && creep.room.name == room.name) {
             creep.memory.stats.name = creep.name;
             var stats = creep.room.memory.stats.builder;

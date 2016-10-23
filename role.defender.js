@@ -3,6 +3,8 @@ var util = require('util');
 var roleDefender = {
 
     run: function(creep, room) {
+        if (creep.moveToAssignedRoom()) return; 
+
         var target = creep.pos.findClosestByRange(FIND_HOSTILE_CREEPS);
         if (target) {
             creep.attack(target);

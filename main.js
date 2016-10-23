@@ -9,6 +9,7 @@ var roleScout = require('role.scout');
 var roleDefender = require('role.defender');
 var Room = require('room');
 var _ = require('lodash');
+require('extensions.creep');
 
 module.exports.loop = function () {
 
