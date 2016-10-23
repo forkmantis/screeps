@@ -22,11 +22,10 @@ module.exports.loop = function () {
 
     for(var roomName in Game.rooms) {
         var room = Game.rooms[roomName];
-        var roomController = new Room(room);
-        roomController.init();
-        
-        var spawn = room.find(FIND_STRUCTURES, { filter: function(x) { return x.structureType == STRUCTURE_SPAWN; }})[0];
+        var spawn = room.find(FIND_MY_STRUCTURES, { filter: function(x) { return x.structureType == STRUCTURE_SPAWN; }})[0];
         if (spawn) {
+            var roomController = new Room(room);
+            roomController.init();
             room.memory.spawnName = spawn.name;
             var sourceCount = (room.memory.sources) ? Object.keys(room.memory.sources).length : 1;
             var desiredHarvesters = sourceCount;
