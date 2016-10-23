@@ -29,7 +29,7 @@ module.exports.loop = function () {
             room.memory.spawnName = spawn.name;
             var sourceCount = (room.memory.sources) ? Object.keys(room.memory.sources).length : 1;
             var desiredHarvesters = sourceCount;
-            var desiredTransporters = 1;
+            var desiredTransporters = room.find(FIND_STRUCTURES, { filter: function(x) { return x.structureType == STRUCTURE_CONTAINER; }}).length > 0 ? 1 : 0;
             var desiredBuilders = room.find(FIND_CONSTRUCTION_SITES).length > 0 ? 1 : 0;
             var desiredUpgraders = (room.memory.desiredUpgraders) ? room.memory.desiredUpgraders : 2;
             if (desiredBuilders > 0) desiredUpgraders -= 1;
