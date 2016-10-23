@@ -79,8 +79,8 @@ var roleMiner = {
             }
         }
 	},
-    spawn: function(spawn) {
-        var components = this.getComponents(spawn.room);
+    spawn: function(spawn, energyAvailable) {
+        var components = this.getComponents(energyAvailable);
         return spawn.createCreep(components, undefined, {
             'role': 'miner'
             , 'assignedRoom': spawn.room.name
@@ -92,20 +92,20 @@ var roleMiner = {
             }
         });
     },
-    getComponents: function(room) {
-        if (room.energyCapacityAvailable >= 1800) {
+    getComponents: function(energyAvailable) {
+        if (energyAvailable >= 1800) {
             return [WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,CARRY,MOVE,MOVE,MOVE,MOVE,MOVE];
         }
-        else if (room.energyCapacityAvailable >= 1300) {
+        else if (energyAvailable >= 1300) {
             return [WORK,WORK,WORK,WORK,WORK,CARRY,MOVE,MOVE,MOVE];
         }
-        else if (room.energyCapacityAvailable >= 800) {
+        else if (energyAvailable >= 800) {
             return [WORK,WORK,CARRY,MOVE,MOVE];
         }
-        else if (room.energyCapacityAvailable >= 450) {
-            return [WORK,WORK,CARRY,MOVE];
+        else if (energyAvailable >= 250) {
+            return [WORK,CARRY,MOVE,MOVE];
         }
-        else if (room.energyCapacityAvailable >= 300) {
+        else if (energyAvailable >= 200) {
             return [WORK,CARRY,MOVE];
         }
     }
