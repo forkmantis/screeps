@@ -61,8 +61,8 @@ var roleUpgrader = {
             }
         }
 	},
-    spawn: function(spawn) {
-        var components = this.getComponents(spawn.room);
+    spawn: function(spawn, energyAvailable) {
+        var components = this.getComponents(energyAvailable);
         return spawn.createCreep(
             components
             , undefined
@@ -78,17 +78,20 @@ var roleUpgrader = {
             }
         );
     },
-    getComponents: function(room) {
-        if (room.energyCapacityAvailable >= 1300) {
-            return [WORK,WORK,WORK,WORK,CARRY,CARRY,WORK,WORK,WORK,CARRY,CARRY,MOVE,MOVE];
+    getComponents: function(energyAvailable) {
+        if (energyAvailable >= 1000) {
+            return [WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE];
         }
-        else if (room.energyCapacityAvailable >= 800) {
-            return [WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE];
+        else if (energyAvailable >= 750) {
+            return [WORK,WORK,WORK,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE];
         }
-        else if (room.energyCapacityAvailable >= 450) {
+        else if (energyAvailable >= 500) {
+            return [WORK,WORK,CARRY,CARRY,MOVE,MOVE,MOVE,MOVE];
+        }
+        else if (energyAvailable >= 350) {
             return [WORK,WORK,CARRY,MOVE,MOVE];
         }
-        else if (room.energyCapacityAvailable >= 300) {
+        else if (energyAvailable >= 200) {
             return [WORK,CARRY,MOVE];
         }
     }
