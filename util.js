@@ -86,7 +86,7 @@ module.exports = {
         target = creep.pos.findClosestByRange(FIND_STRUCTURES, {
             filter: function(object) {
                 return (object.structureType == STRUCTURE_RAMPART) &&
-                    object.hits == 1; 
+                    object.hits < 1000; 
             }
         });
 
