@@ -6,6 +6,7 @@ var roleWallBuilder = require('role.wallBuilder');
 var roleTransporter = require('role.transporter');
 var roleMiner = require('role.miner');
 var roleScout = require('role.scout');
+var roleDefender = require('role.defender');
 var Room = require('room');
 var _ = require('lodash');
 
@@ -49,6 +50,9 @@ module.exports.loop = function () {
                 autoSpawn('wallBuilder', desiredWallBuilders, roomController, roleWallBuilder);
                 autoSpawn('miner', desiredMiners, roomController, roleMiner);
             }
+            else if (roomController.state == 'under-attack') {
+                autoSpawn('defender', 99, roomController, roleDefender);
+            }
         }
         
         for(var name in Game.creeps) {
@@ -76,6 +80,9 @@ module.exports.loop = function () {
             }
             if(creep.memory.role == 'scout') {
                 roleScout.run(creep, room);
+            }
+            if(creep.memory.role == 'defender') {
+                roleDefender.run(creep, room);
             }
         }
 
