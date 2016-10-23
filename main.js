@@ -116,7 +116,7 @@ function autoSpawn(role, quantity, roomController, creepRole) {
     var spawnedCreeps = _.filter(Game.creeps, (creep) => creep.memory.role == role && creep.memory.assignedRoom == room.name);
     var spawn = Game.spawns[room.memory.spawnName];
 
-    var spawnEnergy = (roomController.state === 'unhealthy') ? room.energyAvailable : room.energyCapacityAvailable;
+    var spawnEnergy = (roomController.state === 'unhealthy') ? room.energyAvailable : _.max([room.energyCapacityAvailable * .8, 500]);
 
     if (spawnedCreeps.length < quantity) {
         var newName = creepRole.spawn(spawn, spawnEnergy);
