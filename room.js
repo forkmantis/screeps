@@ -13,7 +13,7 @@ function Room(room) {
             this.state = ROOM_STATE_UNHEALTHY;
         }
         
-        if (this.room.find(FIND_HOSTILE_CREEPS).length > 0) this.state = ROOM_STATE_UNDER_ATTACK;
+        if (this.room.find(FIND_HOSTILE_CREEPS).length > 0 && !this.room.safeMode) this.state = ROOM_STATE_UNDER_ATTACK;
     }
 }
 
