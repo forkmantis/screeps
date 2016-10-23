@@ -11,18 +11,22 @@ var roleWallBuilder = {
         }
 
 	    if(creep.memory.repairing && creep.carry.energy == 0) {
+            delete creep.memory.target;
             creep.memory.repairing = false;
             creep.say('harvesting');
 	    }
 	    if(!creep.memory.repairing && creep.carry.energy == creep.carryCapacity) {
+            delete creep.memory.target;
 	        creep.memory.repairing = true;
 	        creep.say('barriers!');
 	    }
 
 	    if(creep.memory.repairing) {
-	        var target = util.findNearestRepairBarrier(creep);
-            if(target) {
+            if (!creep.memory.target) {
+                var target = util.findNearestRepairBarrier(creep);
                 creep.memory.target = target.id;
+            }
+            if(creep.memory.target) {
                 error = creep.repair(Game.getObjectById(creep.memory.target));
                 if(error == ERR_NOT_IN_RANGE) {
                     creep.moveTo(Game.getObjectById(creep.memory.target));
