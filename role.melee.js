@@ -23,9 +23,11 @@ var roleMelee = {
 	},
     spawn: function(spawn, energyAvailable) {
         var components = this.getComponents(energyAvailable);
+        var attackTarget = (spawn.room.memory.attackTarget) ? spawn.room.memory.attackTarget : spawn.room.name;
         return spawn.createCreep(components, undefined, {
             'role': 'melee'
-            , 'assignedRoom': spawn.room.name
+            , 'assignedRoom': attackTarget
+            , 'homeRoom': spawn.room.name
         });
     },
     getComponents: function(energyAvailable) {
