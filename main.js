@@ -7,6 +7,8 @@ var roleTransporter = require('role.transporter');
 var roleMiner = require('role.miner');
 var roleScout = require('role.scout');
 var roleMelee = require('role.melee');
+var roleHealer = require('role.healer');
+var roleAgitator = require('role.agitator');
 var Room = require('room');
 var _ = require('lodash');
 require('extensions.creep');
@@ -53,6 +55,12 @@ module.exports.loop = function () {
             else if (roomController.state == 'under-attack') {
                 autoSpawn('melee', 25, roomController, roleMelee);
             }
+            if (room.memory.attackTarget) {
+                //console.log('fit');
+                //autoSpawn('melee', 3, roomController, roleMelee);
+                //autoSpawn('healer', 3, roomController, roleHealer);
+                //autoSpawn('agitator', 0, roomController, roleAgitator);
+            }
         }
         
         for(var name in Game.creeps) {
@@ -83,6 +91,12 @@ module.exports.loop = function () {
             }
             if(creep.memory.role == 'melee') {
                 roleMelee.run(creep, room);
+            }
+            if(creep.memory.role == 'healer') {
+                roleHealer.run(creep, room);
+            }
+            if(creep.memory.role == 'agitator') {
+                roleAgitator.run(creep, room);
             }
         }
 

@@ -88,6 +88,9 @@ var roleTransporter = {
         else if (energyAvailable >= 800) {
             return [CARRY,MOVE,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE];
         }
+        else if (energyAvailable >= 500) {
+            return [CARRY,MOVE,CARRY,MOVE,CARRY,MOVE];
+        }
         else if (energyAvailable >= 450) {
             return [CARRY,MOVE,CARRY,CARRY,MOVE];
         }
