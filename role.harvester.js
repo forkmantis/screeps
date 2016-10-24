@@ -81,6 +81,7 @@ var roleHarvester = {
         var source = this.assignSourceToHarvester(spawn.room);
         if (!energyAvailable) energyAvailable = spawn.room.energyCapacityAvailable;
         var components = this.getComponents(energyAvailable);
+        if (!components) return;
         return spawn.createCreep(components, undefined, 
             {
                 'role': 'harvester'
