@@ -134,10 +134,10 @@ module.exports.loop = function () {
 
 function autoSpawn(role, quantity, roomController, creepRole) {
     var room = roomController.room;
-    var spawnedCreeps = _.filter(Game.creeps, (creep) => creep.memory.role == role && creep.memory.assignedRoom == room.name);
+    var spawnedCreeps = _.filter(Game.creeps, (creep) => creep.memory.role == role && (creep.memory.assignedRoom == room.name || creep.memory.homeRoom == room.name));
     var spawn = Game.spawns[room.memory.spawnName];
 
-    var spawnEnergy = (roomController.state === 'unhealthy') ? room.energyAvailable : _.max([room.energyCapacityAvailable * .8, 500]);
+    var spawnEnergy = (roomController.state === 'unhealthy') ? room.energyAvailable : room.energyCapacityAvailable * .8;
 
     if (spawnedCreeps.length < quantity) {
         var newName = creepRole.spawn(spawn, spawnEnergy);
