@@ -32,7 +32,8 @@ var roleHealer = {
         var components = this.getComponents(energyAvailable);
         return spawn.createCreep(components, undefined, {
             'role': 'healer'
-            , 'assignedRoom': spawn.room.name
+            , 'assignedRoom': spawn.room.memory.attackTarget
+            , 'homeRoom' : spawn.room.name
         });
     },
     getComponents: function(energyAvailable) {
