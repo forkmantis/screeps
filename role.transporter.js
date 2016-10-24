@@ -41,6 +41,7 @@ var roleTransporter = {
                     creep.moveTo(Game.getObjectById(creep.memory.target));
                 }
                 else {
+                    if (!creep.memory.stats.output) creep.memory.stats.output = 0;
                     creep.memory.stats.output += creep.carryCapacity;
                 }
             }
