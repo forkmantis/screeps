@@ -34,6 +34,9 @@ var roleWallBuilder = {
                 if(error == ERR_NOT_IN_RANGE) {
                     creep.moveTo(Game.getObjectById(creep.memory.target));
                 }
+                else if (error != 0) {
+                    delete creep.memory.target;
+                }
                 else {
                     if (!creep.memory.stats) creep.memory.stats = {};
                     if (!creep.memory.stats.output) creep.memory.stats.output = 0;

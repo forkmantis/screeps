@@ -26,8 +26,12 @@ var roleBuilder = {
 	    if(creep.memory.building) {
 	        var target = _.first(creep.room.find(FIND_CONSTRUCTION_SITES));
             if(target) {
-                if(creep.build(target) == ERR_NOT_IN_RANGE) {
+                var error = creep.build(target);
+                if(error == ERR_NOT_IN_RANGE) {
                     creep.moveTo(target);
+                }
+                else if (error != 0) {
+                    delete creep.memory.target;
                 }
                 else {
                     if (!creep.memory.stats) creep.memory.stats = {};
