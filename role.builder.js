@@ -84,10 +84,10 @@ var roleBuilder = {
     },
     getComponents: function(energyAvailable) {
         if (energyAvailable >= 1200) {
-            return [WORK,WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE,MOEV,MOVE,MOVE,MOVE,MOVE,MOVE];
+            return [WORK,WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE];
         }
         else if (energyAvailable >= 950) {
-            return [WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY,CARRY,MOVE,MOEV,MOVE,MOVE,MOVE,MOVE,MOVE];
+            return [WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE];
         }
         else if (energyAvailable >= 700) {
             return [WORK,WORK,WORK,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE,MOVE,MOVE];
