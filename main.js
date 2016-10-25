@@ -57,9 +57,9 @@ module.exports.loop = function () {
             }
             if (room.memory.attackTarget) {
                 //console.log('fit');
-                //autoSpawn('melee', 3, roomController, roleMelee);
-                //autoSpawn('healer', 3, roomController, roleHealer);
-                //autoSpawn('agitator', 0, roomController, roleAgitator);
+                autoSpawn('melee', 3, roomController, roleMelee);
+                autoSpawn('healer', 1, roomController, roleHealer);
+                autoSpawn('agitator', 0, roomController, roleAgitator);
             }
         }
         
