@@ -14,6 +14,8 @@ var roleBuilder = {
             if (stats.length > 5) stats.shift();
         }
 
+        if (!creep.room.spawn && creep.ticksToLive < 100) creep.memory.role = 'upgrader';
+
 	    if(creep.memory.building && creep.carry.energy == 0) {
             creep.memory.building = false;
             creep.say('acquiring');
