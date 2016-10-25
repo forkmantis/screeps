@@ -22,8 +22,9 @@ var roleAgitator = {
         var components = this.getComponents(energyAvailable);
         return spawn.createCreep(components, undefined, {
             'role': 'agitator'
-            , 'assignedRoom': 'E63S67'
-            , 'targetRoom': 'E62S67'
+            , 'assignedRoom': 'E63S68'
+            , 'targetRoom': 'E63S69'
+            , 'homeRoom': spawn.room.name
         });
     },
     getComponents: function(energyAvailable) {
