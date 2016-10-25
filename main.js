@@ -35,7 +35,7 @@ module.exports.loop = function () {
             var desiredTransporters = room.find(FIND_STRUCTURES, { filter: function(x) { return x.structureType == STRUCTURE_CONTAINER; }}).length > 0 ? 1 : 0;
             var desiredBuilders = room.find(FIND_CONSTRUCTION_SITES).length > 0 ? 1 : 0;
             var desiredUpgraders = (room.memory.desiredUpgraders) ? room.memory.desiredUpgraders : 2;
-            if (desiredBuilders > 0) desiredUpgraders -= 1;
+            if (desiredBuilders > 0) _.max[desiredUpgraders -= 1, 1];
             var desiredRepairers = 1;
             var desiredWallBuilders = (desiredBuilders > 0) ? 0 : 1;
             var desiredMiners = room.find(FIND_STRUCTURES, { filter: function(x) { return x.structureType == STRUCTURE_EXTRACTOR; }}).length;
