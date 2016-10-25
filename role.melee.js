@@ -31,11 +31,17 @@ var roleMelee = {
         });
     },
     getComponents: function(energyAvailable) {
-        if (energyAvailable >= 450) {
-            return [TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,MOVE,ATTACK,MOVE,ATTACK,MOVE,ATTACK,MOVE];
+        if (energyAvailable >= 690) {
+            return [TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,ATTACK,ATTACK,ATTACK,MOVE];
         }
-        else if (energyAvailable >= 300) {
-            return [TOUGH,TOUGH,TOUGH,TOUGH,MOVE,ATTACK,MOVE,ATTACK,MOVE];
+        if (energyAvailable >= 630) {
+            return [TOUGH,TOUGH,TOUGH,TOUGH,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,ATTACK,ATTACK,ATTACK,MOVE];
+        }
+        if (energyAvailable >= 570) {
+            return [TOUGH,TOUGH,TOUGH,MOVE,MOVE,MOVE,MOVE,MOVE,ATTACK,ATTACK,ATTACK,MOVE];
+        }
+        else if (energyAvailable >= 410) {
+            return [TOUGH,TOUGH,TOUGH,MOVE,MOVE,MOVE,ATTACK,ATTACK,MOVE];
         }
         else if (energyAvailable >= 150) {
             return [TOUGH,TOUGH,MOVE,ATTACK,MOVE,MOVE];
