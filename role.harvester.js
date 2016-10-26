@@ -30,6 +30,7 @@ var roleHarvester = {
         if(creep.memory.delivering) {
             var target = util.findNearestEmptyContainer(creep);
             if (!target) target = util.findNearestEmptyStorage(creep);
+            if (!target) target = util.findNearestEmptyExtension(creep);
             if (!target) target = _.first(creep.room.find(FIND_STRUCTURES, {
                     filter: (structure) => {
                         return (structure.structureType == STRUCTURE_SPAWN) && structure.energy < structure.energyCapacity;
