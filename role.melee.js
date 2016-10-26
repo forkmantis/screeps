@@ -15,7 +15,7 @@ var roleMelee = {
             creep.moveTo(target);
         }
         else {
-            var flag = creep.pos.findClosestByRange(FIND_FLAGS, { filter: function(x) { return x.name === 'Attack'; }});
+            var flag = creep.pos.findClosestByRange(FIND_FLAGS, { filter: function(x) { return x.secondaryColor === COLOR_RED; }});
             if (flag) {
                 creep.moveTo(flag);    
             }
