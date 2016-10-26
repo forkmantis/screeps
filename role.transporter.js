@@ -34,6 +34,7 @@ var roleTransporter = {
             });
             if (!target) target = util.findNearestEmptyTower(creep);
             if (!target) target = findInLink(creep);
+            if (!target && canFillStorage(creep)) target = creep.room.storage;
             creep.memory.target = (target) ? target.id : undefined;
             if (creep.memory.target) {
                 error = creep.transfer(Game.getObjectById(creep.memory.target), RESOURCE_ENERGY);
@@ -116,6 +117,16 @@ function findInLink(creep) {
         return link;
     }
     return undefined;
+}
+
+function canFillStorage(creep) {
+    var containers = creep.room.find(FIND_STRUCTURES, {
+        filter: function(x) {
+            return x.structureType == STRUCTURE_CONTAINER;
+        }
+    });
+
+    return (_.sum(containers, function(o) { return o.store[RESOURCE_ENERGY]; }) / containers.length > 1000); 
 }
 
 module.exports = roleTransporter;
