@@ -53,9 +53,14 @@ var roleTransporter = {
             }
         }
         else {
-            var storage = util.findNearestFullContainer(creep);
-            if (storage) {
-                creep.memory.target = storage.id;
+            var container = _.last(_.sortByOrder(creep.pos.findInRange(FIND_STRUCTURES, 15, {
+                filter: function(x) {
+                    return x.structureType == STRUCTURE_CONTAINER;
+                }
+            }), [function (x) { return _.sum(x.store); }]));
+            if (!container) container = util.findNearestFullStorageOrContainer(creep);
+            if (container) {
+                creep.memory.target = container.id;
                 if(creep.withdraw(Game.getObjectById(creep.memory.target), RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
                     creep.moveTo(Game.getObjectById(creep.memory.target));
                 }
