@@ -16,9 +16,14 @@ Creep.prototype.pickupDroppedEnergy = function(range) {
 
 Creep.prototype.moveToAssignedRoom = function() {
     if (!this.memory.assignedRoom) this.memory.assignedRoom = this.room.name;
+    return this.moveToRoom(this.memory.assignedRoom);
+}
+
+Creep.prototype.moveToRoom = function(roomName) {
+    if (!roomName) roomName = this.room.name;
     if (!this.memory.stats) this.memory.stats = {};
-    if(this.memory.assignedRoom != this.room.name) {
-        var exitDir = Game.map.findExit(this.room.name, this.memory.assignedRoom);
+    if(roomName != this.room.name) {
+        var exitDir = Game.map.findExit(this.room.name, roomName);
         var exit = this.pos.findClosestByRange(exitDir);
         this.moveTo(exit);
         return true;
