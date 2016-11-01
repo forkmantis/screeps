@@ -25,8 +25,8 @@ var roleWallBuilder = {
 	    }
 
 	    if(creep.memory.repairing) {
-            if (!creep.memory.target) {
-                var target = util.findNearestRepairBarrier(creep);
+            if (Game.time % 10 == 0 || !creep.memory.target) {
+                target = util.findNearestRepairBarrier(creep);
                 creep.memory.target = target.id;
             }
             if(creep.memory.target) {
